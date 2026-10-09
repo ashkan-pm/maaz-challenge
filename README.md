@@ -71,7 +71,7 @@ Husky runs lint-staged on matching **staged files only**:
 
 Fixes are staged automatically; unresolved lint errors block the commit. Standalone lint and format scripts process the whole project, respecting ignore rules.
 
-GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**, and **Build** jobs on pushes, pull requests, and manual dispatch. Each uses the pinned pnpm version and a frozen lockfile for reproducible installs. Jobs cache dependencies, use read-only repository permissions, and cancel superseded runs.
+GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**, and **Build** jobs on pull requests, pushes to `main`, and manual dispatch. Each uses the pinned pnpm version and a frozen lockfile for reproducible installs. Jobs cache dependencies, use read-only repository permissions, and cancel superseded runs.
 
 ## Data assumptions
 
