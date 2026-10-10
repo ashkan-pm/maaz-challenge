@@ -16,7 +16,7 @@ export default defineConfig({
       await defineVitestProject({
         test: {
           name: 'nuxt',
-          include: ['test/nuxt/**/*.test.ts'],
+          include: ['app/**/*.nuxt.test.ts', 'test/nuxt/**/*.test.ts'],
           environment: 'nuxt',
           clearMocks: true,
           restoreMocks: true

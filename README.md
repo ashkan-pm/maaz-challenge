@@ -46,7 +46,8 @@ The server defaults to **http://localhost:3000**; configure it with `PORT` and `
 ```text
 app/                       Application entry point and components
 public/                    Static assets served directly
-test/nuxt/                 Nuxt runtime tests
+app/**/*.nuxt.test.ts      Colocated Nuxt component and layout tests
+test/unit/                 Node unit tests
 .github/workflows/ci.yml   Continuous integration
 .husky/pre-commit          Staged-file checks
 nuxt.config.ts             Application configuration
@@ -60,7 +61,7 @@ vitest.config.ts           Node unit and Nuxt runtime test projects
 
 Formatting uses two spaces, single quotes, no semicolons, trailing commas, a 100-character line width, and LF endings. Generated files and `pnpm-lock.yaml` are excluded from formatting.
 
-[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and component/composable tests in Nuxt with Vue Test Utils and happy-dom (`test/nuxt/`). Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior, unmount components, and mock API calls to keep tests independent of the network. Browser end-to-end tests and coverage thresholds are not configured.
+[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and colocated `*.nuxt.test.ts` component/layout tests in Nuxt with Vue Test Utils and happy-dom. Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior, unmount components, and mock API calls to keep tests independent of the network. Browser end-to-end tests and coverage thresholds are not configured.
 
 ## Commit checks and CI
 
@@ -72,6 +73,15 @@ Husky runs lint-staged on matching **staged files only**:
 Fixes are staged automatically; unresolved lint errors block the commit. Standalone lint and format scripts process the whole project, respecting ignore rules.
 
 GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**, and **Build** jobs on pull requests, pushes to `main`, and manual dispatch. Each uses the pinned pnpm version and a frozen lockfile for reproducible installs. Jobs cache dependencies, use read-only repository permissions, and cancel superseded runs.
+
+## Design choices
+
+- **Responsive layout:** Mobile-first Flexbox and a shared container keep page sections aligned, with navigation adapted to smaller screens.
+- **Sticky header:** Navigation remains accessible while scrolling.
+- **Mobile menu:** A rounded panel opens below the header with a slide-and-fade transition that respects reduced-motion preferences. It closes on selection, outside clicks, Escape, or switching to desktop.
+- **Interaction states:** Red highlights identify the current route and open menu. Links, buttons, and social icons have consistent hover, focus, and pressed states.
+- **Styling and assets:** Scoped SCSS handles component styles; global SCSS holds shared tokens and resets. Self-hosted variable fonts and Figma icons preserve the design without duplicate icon variants.
+- **Component organization:** Components are grouped by responsibility and use explicit imports. Only reusable primitives belong in `ui/`.
 
 ## Data assumptions
 
