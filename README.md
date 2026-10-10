@@ -73,6 +73,15 @@ Fixes are staged automatically; unresolved lint errors block the commit. Standal
 
 GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**, and **Build** jobs on pull requests, pushes to `main`, and manual dispatch. Each uses the pinned pnpm version and a frozen lockfile for reproducible installs. Jobs cache dependencies, use read-only repository permissions, and cancel superseded runs.
 
+## Design choices
+
+- **Responsive layout:** Mobile-first Flexbox and a shared container keep page sections aligned, with navigation adapted to smaller screens.
+- **Sticky header:** Navigation remains accessible while scrolling.
+- **Mobile menu:** A rounded panel opens below the header with a slide-and-fade transition that respects reduced-motion preferences. It closes on selection, outside clicks, Escape, or switching to desktop.
+- **Interaction states:** Red highlights identify the current route and open menu. Links, buttons, and social icons have consistent hover, focus, and pressed states.
+- **Styling and assets:** Scoped SCSS handles component styles; global SCSS holds shared tokens and resets. Self-hosted variable fonts and Figma icons preserve the design without duplicate icon variants.
+- **Component organization:** Components are grouped by responsibility and use explicit imports. Only reusable primitives belong in `ui/`.
+
 ## Data assumptions
 
 Fake Store API is the source of product content. Currency handling and unavailable stock information must be documented when data integration is implemented.
