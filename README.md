@@ -46,7 +46,8 @@ The server defaults to **http://localhost:3000**; configure it with `PORT` and `
 ```text
 app/                       Application entry point and components
 public/                    Static assets served directly
-test/nuxt/                 Nuxt runtime tests
+app/**/*.nuxt.test.ts      Colocated Nuxt component and layout tests
+test/unit/                 Node unit tests
 .github/workflows/ci.yml   Continuous integration
 .husky/pre-commit          Staged-file checks
 nuxt.config.ts             Application configuration
@@ -60,7 +61,7 @@ vitest.config.ts           Node unit and Nuxt runtime test projects
 
 Formatting uses two spaces, single quotes, no semicolons, trailing commas, a 100-character line width, and LF endings. Generated files and `pnpm-lock.yaml` are excluded from formatting.
 
-[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and component/composable tests in Nuxt with Vue Test Utils and happy-dom (`test/nuxt/`). Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior, unmount components, and mock API calls to keep tests independent of the network. Browser end-to-end tests and coverage thresholds are not configured.
+[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and colocated `*.nuxt.test.ts` component/layout tests in Nuxt with Vue Test Utils and happy-dom. Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior, unmount components, and mock API calls to keep tests independent of the network. Browser end-to-end tests and coverage thresholds are not configured.
 
 ## Commit checks and CI
 
