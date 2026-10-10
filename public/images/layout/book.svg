@@ -1,0 +1,10 @@
+<svg id="icon" preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="book">
+<path id="Vector" d="M14.6667 11.16V3.11333C14.6667 2.31333 14.0133 1.72 13.22 1.78667H13.18C11.78 1.90667 9.65333 2.62 8.46667 3.36667L8.35333 3.44C8.16 3.56 7.84 3.56 7.64667 3.44L7.48 3.34C6.29333 2.6 4.17333 1.89333 2.77333 1.78C1.98 1.71333 1.33333 2.31333 1.33333 3.10667V11.16C1.33333 11.8 1.85333 12.4 2.49333 12.48L2.68667 12.5067C4.13333 12.7 6.36667 13.4333 7.64667 14.1333L7.67333 14.1467C7.85333 14.2467 8.14 14.2467 8.31333 14.1467C9.59333 13.44 11.8333 12.7 13.2867 12.5067L13.5067 12.48C14.1467 12.4 14.6667 11.8 14.6667 11.16Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path id="Vector_2" d="M8 3.66V13.66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path id="Vector_3" d="M5.16667 5.66H3.66667" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path id="Vector_4" d="M5.66667 7.66H3.66667" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<g id="Vector_5" opacity="0">
+</g>
+</g>
+</svg>

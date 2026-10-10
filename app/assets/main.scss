@@ -143,3 +143,14 @@ a[href] {
     --transition-duration: 0ms;
   }
 }
+
+.container {
+  inline-size: min(var(--container-max), calc(100% - var(--page-gutter) * 2));
+  margin-inline: auto;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --page-gutter: clamp(2rem, 7.8vw, 5rem);
+  }
+}
