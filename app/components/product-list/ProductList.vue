@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppliedFilters from './AppliedFilters.vue'
 import ProductControlsPlaceholder from './ProductControlsPlaceholder.vue'
 import ProductGrid from './ProductGrid.vue'
 import type { ProductSummary } from '~/types/product'
@@ -11,7 +12,7 @@ defineProps<{ products: readonly ProductSummary[] }>()
     <h1 id="product-list-title">لیست محصولات</h1>
     <ProductControlsPlaceholder class="controls" />
     <div class="product-results">
-      <div class="applied-filters-placeholder" aria-hidden="true" />
+      <AppliedFilters class="applied-filters-card" />
       <ProductGrid :products="products" />
     </div>
   </section>
@@ -33,17 +34,15 @@ h1 {
   gap: var(--space-6);
 }
 
+.applied-filters-card {
+  order: -1;
+}
+
 .product-results {
-  display: flex;
+  display: contents;
   flex-direction: column;
   gap: var(--space-6);
   min-inline-size: 0;
-}
-
-.applied-filters-placeholder {
-  min-block-size: var(--space-16);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
 }
 
 @media (min-width: 48rem) {
@@ -56,7 +55,12 @@ h1 {
     flex: 0 0 16.5rem;
   }
 
+  .applied-filters-card {
+    order: 0;
+  }
+
   .product-results {
+    display: flex;
     flex: 1;
   }
 }
