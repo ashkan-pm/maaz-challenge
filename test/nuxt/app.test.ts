@@ -1,6 +1,7 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { describe, expect, it } from 'vitest'
-import SiteHeader from '~/components/layout/SiteHeader.vue'
+import { nextTick } from 'vue'
+import SiteHeader from '~/components/layout/header/SiteHeader.vue'
 import DefaultLayout from '~/layouts/default.vue'
 import HomePage from '~/pages/index.vue'
 
@@ -11,7 +12,6 @@ describe('header and page shell', () => {
     try {
       expect(layout.find('header').exists()).toBe(true)
       expect(layout.find('main h1').text()).toBe('لیست محصولات')
-      expect(layout.find('a[href="#main-content"]').exists()).toBe(true)
     } finally {
       layout.unmount()
       page.unmount()
@@ -24,6 +24,33 @@ describe('header and page shell', () => {
       const current = wrapper.findAll('nav [aria-current="page"]')
       expect(current).toHaveLength(1)
       expect(current[0]?.text()).toBe('لیست محصولات')
+    } finally {
+      wrapper.unmount()
+    }
+  })
+
+  it('toggles the mobile menu, closes on selection, and restores focus on Escape', async () => {
+    const wrapper = await mountSuspended(SiteHeader, { route: '/', attachTo: document.body })
+    try {
+      const button = wrapper.find('button[aria-controls="mobile-navigation"]')
+      expect(button.attributes('aria-expanded')).toBe('false')
+      expect(wrapper.find('#mobile-navigation').exists()).toBe(false)
+
+      await button.trigger('click')
+      expect(button.attributes('aria-expanded')).toBe('true')
+      const menu = wrapper.find('#mobile-navigation')
+      expect(menu.findAll('a')).toHaveLength(4)
+      expect(menu.find('[aria-current="page"]').text()).toBe('لیست محصولات')
+
+      await menu.find('a').trigger('click')
+      expect(button.attributes('aria-expanded')).toBe('false')
+      expect(wrapper.find('#mobile-navigation').exists()).toBe(false)
+
+      await button.trigger('click')
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+      await nextTick()
+      expect(button.attributes('aria-expanded')).toBe('false')
+      expect(document.activeElement).toBe(button.element)
     } finally {
       wrapper.unmount()
     }

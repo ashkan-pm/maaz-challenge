@@ -1,14 +1,46 @@
 <script setup lang="ts">
 import AppIcon from '~/components/ui/AppIcon.vue'
-import type { IconName } from '~/types/icon'
-
-type NavigationItem = {
-  label: string
-  icon: IconName
-  path?: string
-}
+import HeaderMobileMenu from '~/components/layout/header/HeaderMobileMenu.vue'
+import type { NavigationItem } from '~/types/navigation'
 
 const route = useRoute()
+const menuOpen = ref(false)
+const header = useTemplateRef<HTMLElement>('header')
+const menuButton = useTemplateRef<HTMLButtonElement>('menuButton')
+
+function closeMenu(returnFocus = false) {
+  menuOpen.value = false
+  if (returnFocus) menuButton.value?.focus()
+}
+
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && menuOpen.value) closeMenu(true)
+}
+
+function handleOutsideClick(event: PointerEvent) {
+  if (event.target instanceof Node && !header.value?.contains(event.target)) closeMenu()
+}
+
+function handleDesktopChange(event: MediaQueryListEvent) {
+  if (event.matches) closeMenu()
+}
+
+let desktopQuery: MediaQueryList | undefined
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+  document.addEventListener('pointerdown', handleOutsideClick)
+  desktopQuery = window.matchMedia('(min-width: 64rem)')
+  desktopQuery.addEventListener('change', handleDesktopChange)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+  document.removeEventListener('pointerdown', handleOutsideClick)
+  desktopQuery?.removeEventListener('change', handleDesktopChange)
+})
+watch(
+  () => route.path,
+  () => closeMenu()
+)
 const navigation = [
   { label: 'لیست محصولات', icon: 'category', path: '/' },
   { label: 'دریافت مشاوره', icon: 'book', path: undefined },
@@ -18,9 +50,17 @@ const navigation = [
 </script>
 
 <template>
-  <header class="site-header">
+  <header ref="header" class="site-header">
     <div class="toolbar container">
-      <button class="menu-button" type="button" aria-label="باز کردن منو">
+      <button
+        ref="menuButton"
+        class="menu-button"
+        type="button"
+        :aria-label="menuOpen ? 'بستن منو' : 'باز کردن منو'"
+        :aria-expanded="menuOpen"
+        aria-controls="mobile-navigation"
+        @click="menuOpen = !menuOpen"
+      >
         <AppIcon name="menu" />
       </button>
       <span class="header-spacer" aria-hidden="true" />
@@ -57,11 +97,20 @@ const navigation = [
         <AppIcon name="phone" />
       </NuxtLink>
     </div>
+    <Transition name="mobile-menu">
+      <HeaderMobileMenu
+        v-if="menuOpen"
+        :items="navigation"
+        :inert="!menuOpen"
+        @select="closeMenu()"
+      />
+    </Transition>
   </header>
 </template>
 
 <style scoped lang="scss">
 .site-header {
+  position: relative;
   border-end-start-radius: var(--radius-md);
   border-end-end-radius: var(--radius-md);
   background: var(--color-surface);
@@ -92,6 +141,7 @@ const navigation = [
     background-color var(--transition-duration) ease,
     color var(--transition-duration) ease;
 
+  &[aria-expanded='true'],
   &:focus-visible,
   &:active {
     background: var(--color-primary);
@@ -111,6 +161,19 @@ const navigation = [
 .desktop-navigation,
 .header-spacer {
   display: none;
+}
+
+.mobile-menu-enter-active,
+.mobile-menu-leave-active {
+  transition:
+    transform var(--transition-duration) ease,
+    opacity var(--transition-duration) ease;
+}
+
+.mobile-menu-enter-from,
+.mobile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(calc(-1 * var(--space-3)));
 }
 
 @media (min-width: 64rem) {
