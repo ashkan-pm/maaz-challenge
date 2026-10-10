@@ -17,7 +17,9 @@ import HeaderMobileNavigation from '~/components/layout/header/HeaderMobileNavig
 
 <style scoped lang="scss">
 .site-header {
-  position: relative;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 10;
   border-end-start-radius: var(--radius-md);
   border-end-end-radius: var(--radius-md);
   background: var(--color-surface);
