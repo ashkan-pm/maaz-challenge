@@ -1,6 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { describe, expect, it } from 'vitest'
-import SiteHeader from '~/components/SiteHeader.vue'
+import SiteHeader from '~/components/layout/SiteHeader.vue'
 import DefaultLayout from '~/layouts/default.vue'
 import HomePage from '~/pages/index.vue'
 

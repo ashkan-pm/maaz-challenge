@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import SiteHeader from '~/components/layout/SiteHeader.vue'
+</script>
+
 <template>
   <div class="site-layout">
     <a class="skip-link" href="#main-content">رفتن به محتوای اصلی</a>

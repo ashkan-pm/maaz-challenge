@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from '~/components/ui/AppIcon.vue'
 import type { IconName } from '~/types/icon'
 
 type NavigationItem = {
