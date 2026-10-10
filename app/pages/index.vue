@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import ProductListPlaceholder from '~/components/product-list/ProductListPlaceholder.vue'
+import ProductList from '~/components/product-list/ProductList.vue'
+import { sampleProducts } from '~/data/sample-products'
 
 useHead({ title: 'لیست محصولات' })
 </script>
 
 <template>
-  <ProductListPlaceholder />
+  <ProductList :products="sampleProducts" />
 </template>
