@@ -1,26 +1,30 @@
+<script setup lang="ts">
+import SearchControl from './SearchControl.vue'
+</script>
+
 <template>
-  <div class="product-controls" aria-hidden="true">
-    <div class="control-placeholder search-placeholder" />
-    <div class="control-placeholder availability-placeholder" />
-    <div class="control-placeholder sorting-placeholder" />
-    <div class="control-placeholder categories-placeholder" />
+  <div class="product-controls">
+    <SearchControl class="search-card" />
+    <div aria-hidden="true" class="control-placeholder availability-placeholder" />
+    <div aria-hidden="true" class="control-placeholder sorting-placeholder" />
+    <div aria-hidden="true" class="control-placeholder categories-placeholder" />
   </div>
 </template>
 
 <style scoped lang="scss">
 .product-controls {
-  display: flex;
+  display: contents;
   flex-direction: column;
   gap: var(--space-4);
+}
+
+.search-card {
+  order: -2;
 }
 
 .control-placeholder {
   border-radius: var(--radius-lg);
   background: var(--color-surface);
-}
-
-.search-placeholder {
-  min-block-size: 10rem;
 }
 
 .availability-placeholder {
@@ -33,5 +37,14 @@
 
 .categories-placeholder {
   min-block-size: 11.25rem;
+}
+@media (min-width: 48rem) {
+  .product-controls {
+    display: flex;
+  }
+
+  .search-card {
+    order: 0;
+  }
 }
 </style>

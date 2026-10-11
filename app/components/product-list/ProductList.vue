@@ -13,7 +13,7 @@ defineProps<{ products: readonly ProductSummary[] }>()
     <ProductControlsPlaceholder class="controls" />
     <div class="product-results">
       <AppliedFilters class="applied-filters-card" />
-      <ProductGrid :products="products" />
+      <ProductGrid class="results-grid" :products="products" />
     </div>
   </section>
 </template>
@@ -31,11 +31,15 @@ h1 {
 .product-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-4);
 }
 
 .applied-filters-card {
   order: -1;
+}
+
+.product-list .results-grid {
+  margin-block-start: var(--space-2);
 }
 
 .product-results {
@@ -49,6 +53,11 @@ h1 {
   .product-list {
     flex-direction: row;
     align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .product-list .results-grid {
+    margin-block-start: 0;
   }
 
   .controls {
