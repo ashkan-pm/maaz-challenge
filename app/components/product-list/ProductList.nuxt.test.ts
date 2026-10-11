@@ -1,4 +1,5 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
+import type { VueWrapper } from '@vue/test-utils'
 import { enableAutoUnmount, flushPromises } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 import { SEARCH_MAX_LENGTH } from '~/utils/productSearch'
@@ -217,5 +218,68 @@ describe('URL-driven sorting', () => {
     await expect
       .poll(() => wrapper.findAll('.product-card h2').map((item) => item.text()))
       .toEqual(['Low Stock', 'High Stock'])
+  })
+})
+
+describe('URL-driven categories', () => {
+  const products = [
+    { ...product, id: 1, title: 'Shared Shirt', category: "men's clothing" },
+    { ...product, id: 2, title: 'Shared Monitor', category: 'electronics', available: false },
+    { ...product, id: 3, title: 'Other Monitor', category: 'electronics' },
+    { ...product, id: 4, title: 'Shared Ring', category: 'jewelery' }
+  ]
+  const counts = (wrapper: VueWrapper) =>
+    wrapper.findAll('.category-options .badge').map((badge) => badge.text())
+
+  it('reads encoded repeated parameters and ignores unknown categories without adding chips', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?category=men%27s%20clothing&category=electronics&category=unknown'
+    })
+    expect(wrapper.findAll('.product-card')).toHaveLength(3)
+    expect(
+      wrapper
+        .findAll('.category-options input')
+        .map((input) => (input.element as HTMLInputElement).checked)
+    ).toEqual([true, true, false])
+    expect(counts(wrapper)).toEqual(['۱', '۲', '۱'])
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+  })
+
+  it('combines selections, preserves other parameters, and counts search/availability matches', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?search=shared&available=true&sort=rating-asc&tracking=keep'
+    })
+    expect(counts(wrapper)).toEqual(['۱', '۰', '۱'])
+    const checkboxes = wrapper.findAll('.category-options input')
+    await checkboxes[0]!.setValue(true)
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query.category)
+      .toEqual(["men's clothing"])
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(1)
+    await checkboxes[2]!.setValue(true)
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query)
+      .toEqual({
+        search: 'shared',
+        available: 'true',
+        sort: 'rating-asc',
+        tracking: 'keep',
+        category: ["men's clothing", 'jewelery']
+      })
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
+    expect(counts(wrapper)).toEqual(['۱', '۰', '۱'])
+    await checkboxes[0]!.setValue(false)
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(1)
+    await checkboxes[2]!.setValue(false)
+    await expect.poll(() => wrapper.vm.$router.currentRoute.value.query.category).toBeUndefined()
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
+    await wrapper.vm.$router.push('/?search=shared&available=false')
+    await expect.poll(() => counts(wrapper)).toEqual(['۱', '۱', '۱'])
+    await wrapper.vm.$router.push('/?search=missing')
+    await expect.poll(() => counts(wrapper)).toEqual(['۰', '۰', '۰'])
+    expect(wrapper.findAll('.category-options input')).toHaveLength(3)
+    expect(wrapper.get('[role="status"]').text()).toContain('محصولی پیدا نشد')
   })
 })

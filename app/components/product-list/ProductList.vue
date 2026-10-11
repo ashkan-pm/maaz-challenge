@@ -3,6 +3,7 @@ import AppliedFilters from './AppliedFilters.vue'
 import ProductControlsPlaceholder from './ProductControlsPlaceholder.vue'
 import ProductResultsState from './ProductResultsState.vue'
 import ProductGrid from './ProductGrid.vue'
+import { getProductCategories } from '~/utils/productCategories'
 import { sortProducts } from '~/utils/productSort'
 import type { Product } from '~/types/product'
 
@@ -16,13 +17,20 @@ const props = withDefaults(
 )
 defineEmits<{ retry: [] }>()
 
-const { search, draft, available, sort, submitSearch, clearSearch } = useProductFilters()
+const { search, draft, available, sort, categories, submitSearch, clearSearch } = useProductFilters(
+  () => props.products.map((product) => product.category)
+)
+const matchingProducts = computed(() =>
+  props.products.filter(
+    (product) =>
+      product.title.toLowerCase().includes(search.value) && (!available.value || product.available)
+  )
+)
+const categoryOptions = computed(() => getProductCategories(props.products, matchingProducts.value))
 const filteredProducts = computed(() =>
   sortProducts(
-    props.products.filter(
-      (product) =>
-        product.title.toLowerCase().includes(search.value) &&
-        (!available.value || product.available)
+    matchingProducts.value.filter(
+      (product) => !categories.value.length || categories.value.includes(product.category)
     ),
     sort.value
   )
@@ -36,6 +44,8 @@ const filteredProducts = computed(() =>
       v-model:search="draft"
       v-model:available="available"
       v-model:sort="sort"
+      v-model:categories="categories"
+      :category-options="categoryOptions"
       class="controls"
       @search="submitSearch"
     />
