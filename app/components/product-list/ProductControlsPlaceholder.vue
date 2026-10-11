@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import AvailabilityControl from './AvailabilityControl.vue'
 import SearchControl from './SearchControl.vue'
 </script>
 
 <template>
   <div class="product-controls">
     <SearchControl class="search-card" />
-    <div aria-hidden="true" class="control-placeholder availability-placeholder" />
+    <AvailabilityControl />
     <div aria-hidden="true" class="control-placeholder sorting-placeholder" />
     <div aria-hidden="true" class="control-placeholder categories-placeholder" />
   </div>
@@ -25,10 +26,6 @@ import SearchControl from './SearchControl.vue'
 .control-placeholder {
   border-radius: var(--radius-lg);
   background: var(--color-surface);
-}
-
-.availability-placeholder {
-  min-block-size: var(--space-12);
 }
 
 .sorting-placeholder {
