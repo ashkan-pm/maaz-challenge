@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ProductImagePreview from './ProductImagePreview.vue'
 import Card from '~/components/ui/Card.vue'
 import Image from '~/components/ui/Image.vue'
 import AppIcon from '~/components/ui/AppIcon.vue'
@@ -6,6 +7,7 @@ import type { ProductSummary } from '~/types/product'
 
 defineProps<{ product: ProductSummary }>()
 const titleId = useId()
+const previewOpen = ref(false)
 </script>
 
 <template>
@@ -13,11 +15,18 @@ const titleId = useId()
     <h1 :id="titleId" dir="auto">{{ product.title }}</h1>
     <div class="product-image-container">
       <Image class="product-image" :src="product.image" :alt="product.title" loading="eager" />
-      <button type="button" class="preview-button" aria-label="بزرگنمایی تصویر محصول">
+      <button
+        type="button"
+        class="preview-button"
+        aria-label="بزرگنمایی تصویر محصول"
+        aria-haspopup="dialog"
+        @click="previewOpen = true"
+      >
         <AppIcon name="magnify" />
       </button>
     </div>
   </Card>
+  <ProductImagePreview v-model="previewOpen" :product="product" />
 </template>
 
 <style scoped lang="scss">
