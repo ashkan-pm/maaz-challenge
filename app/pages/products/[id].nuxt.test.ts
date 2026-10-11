@@ -44,6 +44,9 @@ describe('product detail route', () => {
       stockQuantity: 0,
       title: 'Cotton Jacket'
     })
+    expect(wrapper.get('h2').text()).toBe('مشخصات فنی')
+    expect(wrapper.findAll('dd').at(-1)?.text()).toBe('۰')
+    expect(wrapper.get('.detail-description').text()).toBe(apiProduct.description)
     expect(handler).toHaveBeenCalledOnce()
   })
 

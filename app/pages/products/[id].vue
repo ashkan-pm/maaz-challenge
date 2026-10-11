@@ -2,6 +2,7 @@
 import { useProduct } from '~/api/products'
 import Breadcrumbs from '~/components/ui/Breadcrumbs.vue'
 import ProductImageCard from '~/components/product-details/ProductImageCard.vue'
+import ProductSpecificationsCard from '~/components/product-details/ProductSpecificationsCard.vue'
 import ProductDetailsState from '~/components/product-details/ProductDetailsState.vue'
 import type { BreadcrumbItem } from '~/types/breadcrumb'
 
@@ -36,7 +37,10 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
       :loading="status === 'pending' || status === 'idle'"
       @retry="refresh()"
     />
-    <ProductImageCard v-else-if="product" :product="product" />
+    <template v-else-if="product">
+      <ProductImageCard :product="product" />
+      <ProductSpecificationsCard :product="product" />
+    </template>
   </div>
 </template>
 
