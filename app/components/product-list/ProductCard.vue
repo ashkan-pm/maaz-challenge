@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
+import Image from '~/components/ui/Image.vue'
 import type { ProductSummary } from '~/types/product'
 
 defineProps<{ product: ProductSummary }>()
@@ -7,7 +8,7 @@ defineProps<{ product: ProductSummary }>()
 
 <template>
   <article class="product-card">
-    <img class="product-image" :src="product.image" :alt="product.title" loading="lazy" />
+    <Image class="product-image" :src="product.image" :alt="product.title" loading="lazy" />
     <h2 class="product-title" dir="auto" :title="product.title">{{ product.title }}</h2>
     <Button pale class="details-button" :aria-label="`مشاهده جزئیات: ${product.title}`">
       مشاهده جزئیات
@@ -32,7 +33,6 @@ defineProps<{ product: ProductSummary }>()
 .product-image {
   inline-size: 100%;
   block-size: 10.625rem;
-  object-fit: contain;
   border-radius: var(--radius-md);
 }
 

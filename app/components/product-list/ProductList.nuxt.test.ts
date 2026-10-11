@@ -8,7 +8,7 @@ describe('product results', () => {
   it('renders fetched products and keeps controls visible', async () => {
     const wrapper = await mountSuspended(ProductList, { props: { products: [product] } })
     expect(wrapper.get('.product-card h2').text()).toBe(product.title)
-    expect(wrapper.get('.product-image').attributes('src')).toBe(product.image)
+    expect(wrapper.get('.product-image img').attributes('src')).toBe(product.image)
     expect(wrapper.find('[role="search"]').exists()).toBe(true)
   })
   it('switches from a retryable error to loading and then results', async () => {
