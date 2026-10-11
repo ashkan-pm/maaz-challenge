@@ -3,6 +3,7 @@ export type FilterChipIconName = 'search' | 'sort' | 'sort-desc'
 export type SocialIconName = 'telegram' | 'instagram' | 'twitter' | 'youtube' | 'linkedin'
 
 export type IconName =
+  | 'home'
   | 'menu'
   | 'category'
   | 'book'

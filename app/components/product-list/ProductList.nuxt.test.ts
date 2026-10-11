@@ -11,6 +11,7 @@ describe('product results', () => {
     const wrapper = await mountSuspended(ProductList, { props: { products: [product] } })
     expect(wrapper.get('.product-card h2').text()).toBe(product.title)
     expect(wrapper.get('.product-image img').attributes('src')).toBe(product.image)
+    expect(wrapper.get('.details-button').attributes('href')).toBe(`/products/${product.id}`)
     expect(wrapper.find('[role="search"]').exists()).toBe(true)
   })
   it('switches from a retryable error to loading and then results', async () => {

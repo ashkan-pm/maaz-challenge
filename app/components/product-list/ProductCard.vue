@@ -10,7 +10,12 @@ defineProps<{ product: ProductSummary }>()
   <article class="product-card">
     <Image class="product-image" :src="product.image" :alt="product.title" loading="lazy" />
     <h2 class="product-title" dir="auto" :title="product.title">{{ product.title }}</h2>
-    <Button pale class="details-button" :aria-label="`مشاهده جزئیات: ${product.title}`">
+    <Button
+      :to="`/products/${product.id}`"
+      pale
+      class="details-button"
+      :aria-label="`مشاهده جزئیات: ${product.title}`"
+    >
       مشاهده جزئیات
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <use href="/images/product-list/caret.svg#icon" />
