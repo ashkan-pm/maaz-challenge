@@ -106,3 +106,53 @@ describe('search length limit', () => {
     await expect.poll(() => wrapper.get('.chip-label').text()).toBe('b'.repeat(50))
   })
 })
+
+describe('URL-driven availability filter', () => {
+  const products = [product, { ...product, id: 2, title: 'Unavailable Backpack', available: false }]
+
+  it('filters direct links without adding a chip and defaults off for missing or invalid values', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?available=true'
+    })
+    expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('true')
+    expect(wrapper.findAll('.product-card')).toHaveLength(1)
+    expect(wrapper.find('.applied-filters').exists()).toBe(false)
+    await wrapper.vm.$router.push('/?available=invalid')
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
+    expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('false')
+  })
+
+  it('combines with search, preserves other parameters, and restores unavailable products when off', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?search=backpack&category=clothing'
+    })
+    await wrapper.get('[role="switch"]').trigger('click')
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query)
+      .toEqual({
+        search: 'backpack',
+        category: 'clothing',
+        available: 'true'
+      })
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(1)
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+    await wrapper.get('.remove-button').trigger('click')
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query)
+      .toEqual({
+        category: 'clothing',
+        available: 'true'
+      })
+    await expect.poll(() => wrapper.find('.applied-filters').exists()).toBe(false)
+    expect(wrapper.findAll('.product-card')).toHaveLength(1)
+    await wrapper.get('[role="switch"]').trigger('click')
+    await expect.poll(() => wrapper.vm.$router.currentRoute.value.query.available).toBe('false')
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
+    await wrapper.vm.$router.push('/?available=true&search=unavailable')
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(0)
+    expect(wrapper.get('[role="status"]').text()).toContain('محصولی پیدا نشد')
+    expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('true')
+  })
+})

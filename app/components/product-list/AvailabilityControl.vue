@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Card from '~/components/ui/Card.vue'
 import Toggle from '~/components/ui/Toggle.vue'
+const available = defineModel<boolean>({ default: false })
 </script>
 
 <template>
   <Card class="availability-control">
     <h2>محصولات موجود</h2>
-    <Toggle label="فقط محصولات موجود" />
+    <Toggle v-model="available" label="فقط محصولات موجود" />
   </Card>
 </template>
 
