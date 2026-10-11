@@ -8,8 +8,11 @@ Requires **Node.js 24.x** and **pnpm 11.13.1**, specified in `.node-version` and
 
 ```bash
 pnpm install
+cp .env.example .env
 pnpm dev
 ```
+
+`NUXT_PUBLIC_API_BASE_URL` configures the API origin (defaults to Fake Store). Set it in `.env` for development or in the deployment environment for production.
 
 Open **http://localhost:3000**. Installation generates Nuxt types and ESLint configuration and installs Git hooks.
 
@@ -45,6 +48,7 @@ The server defaults to **http://localhost:3000**; configure it with `PORT` and `
 
 ```text
 app/                       Application entry point and components
+app/api/                   Requests, endpoint builder, transformers, mock inventory
 public/                    Static assets served directly
 app/**/*.nuxt.test.ts      Colocated Nuxt component and layout tests
 test/unit/                 Node unit tests
@@ -85,4 +89,6 @@ GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**
 
 ## Data assumptions
 
-Fake Store API is the source of product content. Currency handling and unavailable stock information must be documented when data integration is implemented.
+The product list fetches up to 18 Fake Store products during SSR using `useFetch`; hydration reuses the response. Search, sorting, categories, and availability controls remain UI-only.
+
+Fake Store provides ratings but no inventory. `app/api/fixtures/product-inventory.ts` adds fixed mock availability and stock by product ID; unknown IDs default to unavailable with zero stock. `rating.count` is the number of ratings, never stock. Responses are validated before display; loading, empty, and error states include a manual retry. Currency conversion is not implemented.

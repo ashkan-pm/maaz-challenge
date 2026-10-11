@@ -1,5 +1,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
+  runtimeConfig: { public: { apiBaseUrl: 'https://fakestoreapi.com' } },
   devtools: { enabled: true },
   modules: ['@nuxt/eslint'],
   ignore: ['**/*.nuxt.test.ts'],

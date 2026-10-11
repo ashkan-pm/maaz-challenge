@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import AppliedFilters from './AppliedFilters.vue'
 import ProductControlsPlaceholder from './ProductControlsPlaceholder.vue'
+import ProductResultsState from './ProductResultsState.vue'
 import ProductGrid from './ProductGrid.vue'
 import type { ProductSummary } from '~/types/product'
 
-defineProps<{ products: readonly ProductSummary[] }>()
+withDefaults(
+  defineProps<{ products: readonly ProductSummary[]; loading?: boolean; failed?: boolean }>(),
+  { loading: false, failed: false }
+)
+defineEmits<{ retry: [] }>()
 </script>
 
 <template>
@@ -13,7 +18,13 @@ defineProps<{ products: readonly ProductSummary[] }>()
     <ProductControlsPlaceholder class="controls" />
     <div class="product-results">
       <AppliedFilters class="applied-filters-card" />
-      <ProductGrid class="results-grid" :products="products" />
+      <ProductResultsState
+        v-if="loading || failed || !products.length"
+        class="results-grid"
+        :state="loading ? 'loading' : failed ? 'error' : 'empty'"
+        @retry="$emit('retry')"
+      />
+      <ProductGrid v-else class="results-grid" :products="products" />
     </div>
   </section>
 </template>

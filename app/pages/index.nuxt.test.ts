@@ -1,7 +1,12 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import HomePage from './index.vue'
+
+vi.mock('~/api/products', async () => {
+  const { createProductsResult } = await import('~~/test/fixtures/products')
+  return { useProducts: createProductsResult }
+})
 
 enableAutoUnmount(afterEach)
 
