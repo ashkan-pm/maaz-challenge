@@ -3,11 +3,13 @@ import AvailabilityControl from './AvailabilityControl.vue'
 import CategoryControl from './CategoryControl.vue'
 import SortControl from './SortControl.vue'
 import SearchControl from './SearchControl.vue'
+const search = defineModel<string>('search', { default: '' })
+defineEmits<{ search: [] }>()
 </script>
 
 <template>
   <div class="product-controls">
-    <SearchControl class="search-card" />
+    <SearchControl v-model="search" class="search-card" @search="$emit('search')" />
     <AvailabilityControl />
     <SortControl />
     <CategoryControl />

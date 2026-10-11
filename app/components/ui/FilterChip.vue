@@ -3,13 +3,19 @@ import AppIcon from './AppIcon.vue'
 import type { FilterChipIconName } from '~/types/icon'
 
 defineProps<{ label: string; icon: FilterChipIconName }>()
+defineEmits<{ remove: [] }>()
 </script>
 
 <template>
   <span class="filter-chip">
     <AppIcon :name="icon" />
     <span class="chip-label">{{ label }}</span>
-    <button type="button" class="remove-button" :aria-label="`حذف فیلتر: ${label}`">
+    <button
+      type="button"
+      class="remove-button"
+      :aria-label="`حذف فیلتر: ${label}`"
+      @click="$emit('remove')"
+    >
       <AppIcon name="close" />
     </button>
   </span>

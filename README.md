@@ -89,6 +89,6 @@ GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**
 
 ## Data assumptions
 
-The product list fetches up to 18 Fake Store products during SSR using `useFetch`; hydration reuses the response. Search, sorting, categories, and availability controls remain UI-only.
+The product list fetches up to 18 Fake Store products during SSR using `useFetch`; hydration reuses the response. Submitted search is stored in the `search` URL parameter and matches product titles after trimming and lowercasing. Direct links render filtered results during SSR; sorting, categories, and availability remain UI-only.
 
 Fake Store provides ratings but no inventory. `app/api/fixtures/product-inventory.ts` adds fixed mock availability and stock by product ID; unknown IDs default to unavailable with zero stock. `rating.count` is the number of ratings, never stock. Responses are validated before display; loading, empty, and error states include a manual retry. Currency conversion is not implemented.

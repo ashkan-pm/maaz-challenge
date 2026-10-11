@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AnimatedList from '~/components/ui/AnimatedList.vue'
 import ProductCard from './ProductCard.vue'
 import type { ProductSummary } from '~/types/product'
 
@@ -6,11 +7,11 @@ defineProps<{ products: readonly ProductSummary[] }>()
 </script>
 
 <template>
-  <ul class="product-grid" aria-label="محصولات">
+  <AnimatedList tag="ul" class="product-grid" aria-label="محصولات">
     <li v-for="product in products" :key="product.id">
       <ProductCard :product="product" />
     </li>
-  </ul>
+  </AnimatedList>
 </template>
 
 <style scoped lang="scss">

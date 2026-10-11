@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import Card from '~/components/ui/Card.vue'
+import AnimatedList from '~/components/ui/AnimatedList.vue'
 import FilterChip from '~/components/ui/FilterChip.vue'
+defineProps<{ search: string }>()
+defineEmits<{ removeSearch: [] }>()
 </script>
 
 <template>
   <Card class="applied-filters" role="group" aria-labelledby="applied-filters-title">
     <h2 id="applied-filters-title">فیلترهای اعمال شده</h2>
-    <div class="filter-chips">
-      <FilterChip label="دولنگه" icon="search" />
-      <FilterChip label="تعداد" icon="sort" />
-      <FilterChip label="تعداد نزولی" icon="sort-desc" />
-    </div>
+    <AnimatedList class="filter-chips">
+      <FilterChip
+        v-if="search"
+        key="search"
+        :label="search"
+        icon="search"
+        @remove="$emit('removeSearch')"
+      />
+    </AnimatedList>
   </Card>
 </template>
 

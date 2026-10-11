@@ -5,26 +5,43 @@ import ProductResultsState from './ProductResultsState.vue'
 import ProductGrid from './ProductGrid.vue'
 import type { ProductSummary } from '~/types/product'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{ products: readonly ProductSummary[]; loading?: boolean; failed?: boolean }>(),
   { loading: false, failed: false }
 )
 defineEmits<{ retry: [] }>()
+
+const { search, draft, submitSearch, clearSearch } = useProductSearch()
+const filteredProducts = computed(() =>
+  props.products.filter((product) => product.title.toLowerCase().includes(search.value))
+)
+
+function measureFilters(element: Element) {
+  const section = element as HTMLElement
+  section.style.setProperty('--filters-height', `${section.scrollHeight}px`)
+}
 </script>
 
 <template>
   <section class="product-list" aria-labelledby="product-list-title">
     <h1 id="product-list-title">لیست محصولات</h1>
-    <ProductControlsPlaceholder class="controls" />
+    <ProductControlsPlaceholder v-model:search="draft" class="controls" @search="submitSearch" />
     <div class="product-results">
-      <AppliedFilters class="applied-filters-card" />
+      <Transition name="filters" @enter="measureFilters" @before-leave="measureFilters">
+        <div v-if="search" class="applied-filters-card">
+          <AppliedFilters :search="search" @remove-search="clearSearch" />
+        </div>
+      </Transition>
       <ProductResultsState
-        v-if="loading || failed || !products.length"
+        v-if="loading || failed"
         class="results-grid"
-        :state="loading ? 'loading' : failed ? 'error' : 'empty'"
+        :state="loading ? 'loading' : 'error'"
         @retry="$emit('retry')"
       />
-      <ProductGrid v-else class="results-grid" :products="products" />
+      <template v-else>
+        <ProductGrid class="results-grid" :products="filteredProducts" />
+        <ProductResultsState v-if="!filteredProducts.length" state="empty" />
+      </template>
     </div>
   </section>
 </template>
@@ -46,7 +63,29 @@ h1 {
 }
 
 .applied-filters-card {
+  --filters-gap: var(--space-4);
+
   order: -1;
+  min-block-size: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+
+.filters-enter-active,
+.filters-leave-active {
+  block-size: var(--filters-height);
+  transition:
+    block-size var(--transition-duration) ease,
+    margin-block-end var(--transition-duration) ease,
+    opacity var(--transition-duration) ease;
+}
+
+.filters-enter-from,
+.filters-leave-to {
+  block-size: 0;
+  // Cancel the parent's extra flex gap while the section is fully collapsed.
+  margin-block-end: calc(-1 * var(--filters-gap));
+  opacity: 0;
 }
 
 .product-list .results-grid {
@@ -76,6 +115,8 @@ h1 {
   }
 
   .applied-filters-card {
+    --filters-gap: var(--space-6);
+
     order: 0;
   }
 

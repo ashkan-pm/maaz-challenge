@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { SEARCH_MAX_LENGTH } from '~/utils/productSearch'
 import Card from '~/components/ui/Card.vue'
 import Button from '~/components/ui/Button.vue'
 import Input from '~/components/ui/Input.vue'
+const search = defineModel<string>({ default: '' })
+defineEmits<{ search: [] }>()
 </script>
 
 <template>
@@ -10,10 +13,17 @@ import Input from '~/components/ui/Input.vue'
     class="search-control"
     role="search"
     aria-labelledby="product-search-title"
-    @submit.prevent
+    @submit.prevent="$emit('search')"
   >
     <h2 id="product-search-title">فیلتر و جستجو</h2>
-    <Input label="جستجوی محصولات" icon="search" placeholder="جستجو..." clearable />
+    <Input
+      v-model="search"
+      :maxlength="SEARCH_MAX_LENGTH"
+      label="جستجوی محصولات"
+      icon="search"
+      placeholder="جستجو..."
+      clearable
+    />
     <Button type="submit">جستجو</Button>
   </Card>
 </template>
