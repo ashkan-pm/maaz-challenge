@@ -16,9 +16,16 @@ const height = computed(() => {
   return ['sort', 'sort-desc'].includes(props.name) ? 8 : size.value
 })
 const source = computed(() => {
-  const directory = ['home', 'close', 'search', 'sort', 'sort-desc', 'dots', 'check'].includes(
-    props.name
-  )
+  const directory = [
+    'magnify',
+    'home',
+    'close',
+    'search',
+    'sort',
+    'sort-desc',
+    'dots',
+    'check'
+  ].includes(props.name)
     ? 'ui'
     : 'layout'
   return `/images/${directory}/${props.name}.svg#icon`

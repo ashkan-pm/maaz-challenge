@@ -25,6 +25,18 @@ describe('product detail route', () => {
     await expect.poll(() => wrapper.get('[aria-current="page"]').text()).toBe('Cotton Jacket')
     await expect.poll(() => document.title).toBe('Cotton Jacket')
     expect(wrapper.get('a[aria-label="خانه"]').attributes('href')).toBe('/')
+    expect(wrapper.get('h1').text()).toBe('Cotton Jacket')
+    expect(wrapper.get('.product-image img').attributes()).toMatchObject({
+      src: apiProduct.image,
+      alt: 'Cotton Jacket',
+      loading: 'eager'
+    })
+    expect(wrapper.get('section.product-image-card').attributes('aria-labelledby')).toBe(
+      wrapper.get('h1').attributes('id')
+    )
+    const previewButton = wrapper.get('button[aria-label="بزرگنمایی تصویر محصول"]')
+    expect(previewButton.get('use').attributes('href')).toBe('/images/ui/magnify.svg#icon')
+    expect(previewButton.get('svg').attributes('viewBox')).toBe('0 0 24 24')
     expect(wrapper.findAll('a')[1]!.text()).toBe('لیست محصولات')
     expect(useNuxtData<Product>('product:3').data.value).toMatchObject({
       id: 3,
