@@ -6,6 +6,14 @@ export default withNuxt(
     ignores: ['.output/**', '.nuxt/**', 'coverage/**']
   },
   {
+    rules: {
+      'no-restricted-properties': [
+        'error',
+        { object: 'console', property: 'log', message: 'Remove console.log before committing.' }
+      ]
+    }
+  },
+  {
     files: ['**/*.vue'],
     rules: {
       'vue/component-api-style': ['error', ['script-setup']],

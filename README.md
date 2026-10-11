@@ -1,6 +1,6 @@
 # Maaz Frontend Challenge
 
-Vue and Nuxt frontend project for the Maaz interview challenge, using [Fake Store API](https://fakestoreapi.com). UI controls use Farsi and an RTL layout; product titles, descriptions, and category names retain the API's English content.
+Vue and Nuxt frontend project for the Maaz interview challenge, using [Fake Store API](https://fakestoreapi.com). UI controls use Farsi and an RTL layout; product titles, descriptions, and category names retain the API's English content. See [Design choices](design-choices.md) for the implementation decisions and their rationale.
 
 ## Setup
 
@@ -8,8 +8,11 @@ Requires **Node.js 24.x** and **pnpm 11.13.1**, specified in `.node-version` and
 
 ```bash
 pnpm install
+cp .env.example .env
 pnpm dev
 ```
+
+`NUXT_PUBLIC_API_BASE_URL` configures the API origin (defaults to Fake Store). Set it in `.env` for development or in the deployment environment for production.
 
 Open **http://localhost:3000**. Installation generates Nuxt types and ESLint configuration and installs Git hooks.
 
@@ -45,6 +48,7 @@ The server defaults to **http://localhost:3000**; configure it with `PORT` and `
 
 ```text
 app/                       Application entry point and components
+app/api/                   Requests, endpoint builder, transformers, mock inventory
 public/                    Static assets served directly
 app/**/*.nuxt.test.ts      Colocated Nuxt component and layout tests
 test/unit/                 Node unit tests
@@ -57,7 +61,7 @@ vitest.config.ts           Node unit and Nuxt runtime test projects
 
 ## Code quality and testing
 
-[Nuxt ESLint](https://eslint.nuxt.com/packages/module) provides Vue, TypeScript, and auto-import support. Additional rules enforce `<script setup>`, explicit events, immutable props, and avoiding `v-html`. Prettier violations are ESLint errors, with conflicting formatting rules disabled.
+[Nuxt ESLint](https://eslint.nuxt.com/packages/module) provides Vue, TypeScript, and auto-import support. Additional rules enforce `<script setup>`, explicit events, immutable props, and avoiding `v-html`. `console.log` is prohibited. Prettier violations are ESLint errors, with conflicting formatting rules disabled.
 
 Formatting uses two spaces, single quotes, no semicolons, trailing commas, a 100-character line width, and LF endings. Generated files and `pnpm-lock.yaml` are excluded from formatting.
 
@@ -74,15 +78,8 @@ Fixes are staged automatically; unresolved lint errors block the commit. Standal
 
 GitHub Actions runs separate **Formatting**, **Lint**, **Type check**, **Tests**, and **Build** jobs on pull requests, pushes to `main`, and manual dispatch. Each uses the pinned pnpm version and a frozen lockfile for reproducible installs. Jobs cache dependencies, use read-only repository permissions, and cancel superseded runs.
 
-## Design choices
-
-- **Responsive layout:** Mobile-first Flexbox and a shared container keep page sections aligned, with navigation adapted to smaller screens.
-- **Sticky header:** Navigation remains accessible while scrolling.
-- **Mobile menu:** A rounded panel opens below the header with a slide-and-fade transition that respects reduced-motion preferences. It closes on selection, outside clicks, Escape, or switching to desktop.
-- **Interaction states:** Red highlights identify the current route and open menu. Links, buttons, and social icons have consistent hover, focus, and pressed states.
-- **Styling and assets:** Scoped SCSS handles component styles; global SCSS holds shared tokens and resets. Self-hosted variable fonts and Figma icons preserve the design without duplicate icon variants.
-- **Component organization:** Components are grouped by responsibility and use explicit imports. Only reusable primitives belong in `ui/`.
-
 ## Data assumptions
 
-Fake Store API is the source of product content. Currency handling and unavailable stock information must be documented when data integration is implemented.
+The product list fetches up to 18 Fake Store products during SSR using `useFetch`; hydration reuses the response. Submitted search is stored in the `search` URL parameter and matches product titles after trimming and lowercasing. Direct links render filtered results during SSR; the availability toggle uses `available=true|false` and combines with search. Sorting uses `sort` with quantity/rating ascending/descending; missing or invalid values default to `quantity-desc`. Categories use repeated `category` parameters; selections match any selected category. Badge counts reflect search and availability, independent of category selections, and zero-count categories remain visible.
+
+Fake Store provides ratings but no inventory. `app/api/fixtures/product-inventory.ts` adds fixed mock availability and stock by product ID; unknown IDs default to unavailable with zero stock. `rating.count` is the number of ratings, never stock. Responses use typed API models; request errors show a retryable state, and a Nuxt error boundary handles client rendering errors. Loading and empty states are also provided. Currency conversion is not implemented.

@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Yekan Bakh';
+  src: url('/fonts/yekan-bakh-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'IRANYekan';
+  src: url('/fonts/iran-yekan-variable.woff2') format('woff2');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: optional;
+}
