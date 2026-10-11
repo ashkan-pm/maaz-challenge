@@ -1,15 +1,15 @@
-<script setup lang="ts">
+<script setup lang="ts" generic="Value extends string">
 import RadioButton from './RadioButton.vue'
 
 withDefaults(
   defineProps<{
     label: string
-    options: readonly { label: string; value: string; disabled?: boolean }[]
+    options: readonly { label: string; value: Value; disabled?: boolean }[]
     name?: string
   }>(),
   { name: undefined }
 )
-const model = defineModel<string>()
+const model = defineModel<Value>()
 const generatedName = useId()
 </script>
 

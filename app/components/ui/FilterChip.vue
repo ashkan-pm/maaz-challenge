@@ -2,7 +2,9 @@
 import AppIcon from './AppIcon.vue'
 import type { FilterChipIconName } from '~/types/icon'
 
-defineProps<{ label: string; icon: FilterChipIconName }>()
+withDefaults(defineProps<{ label: string; icon: FilterChipIconName; removable?: boolean }>(), {
+  removable: true
+})
 defineEmits<{ remove: [] }>()
 </script>
 
@@ -11,6 +13,7 @@ defineEmits<{ remove: [] }>()
     <AppIcon :name="icon" />
     <span class="chip-label">{{ label }}</span>
     <button
+      v-if="removable"
       type="button"
       class="remove-button"
       :aria-label="`حذف فیلتر: ${label}`"

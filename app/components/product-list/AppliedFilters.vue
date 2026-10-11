@@ -2,7 +2,15 @@
 import Card from '~/components/ui/Card.vue'
 import AnimatedList from '~/components/ui/AnimatedList.vue'
 import FilterChip from '~/components/ui/FilterChip.vue'
-defineProps<{ search: string }>()
+import type { ProductSort } from '~/types/productSort'
+import { PRODUCT_SORT_OPTIONS } from '~/utils/productSort'
+const props = defineProps<{ search: string; sort: ProductSort }>()
+const sortLabel = computed(
+  () =>
+    PRODUCT_SORT_OPTIONS.find((option) => option.value === props.sort)?.label ??
+    PRODUCT_SORT_OPTIONS[0].label
+)
+const sortIcon = computed(() => (props.sort.endsWith('-asc') ? 'sort' : 'sort-desc'))
 defineEmits<{ removeSearch: [] }>()
 </script>
 
@@ -17,6 +25,7 @@ defineEmits<{ removeSearch: [] }>()
         icon="search"
         @remove="$emit('removeSearch')"
       />
+      <FilterChip key="sort" :label="sortLabel" :icon="sortIcon" :removable="false" />
     </AnimatedList>
   </Card>
 </template>

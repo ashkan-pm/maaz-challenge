@@ -1,4 +1,6 @@
 import type { LocationQueryRaw } from 'vue-router'
+import { normalizeSort } from '~/utils/productSort'
+import type { ProductSort } from '~/types/productSort'
 import { normalizeSearch } from '~/utils/productSearch'
 
 export function useProductFilters() {
@@ -18,6 +20,12 @@ export function useProductFilters() {
       void updateQuery({ available: String(value) })
     }
   })
+  const sort = computed({
+    get: () => normalizeSort(route.query.sort),
+    set: (value: ProductSort) => {
+      void updateQuery({ sort: value })
+    }
+  })
   const draft = ref(search.value)
 
   watch(search, (value) => {
@@ -35,5 +43,5 @@ export function useProductFilters() {
     draft.value = ''
   }
 
-  return { search, draft, available, submitSearch, clearSearch }
+  return { search, draft, available, sort, submitSearch, clearSearch }
 }

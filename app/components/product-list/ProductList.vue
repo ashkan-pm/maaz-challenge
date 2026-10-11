@@ -3,11 +3,12 @@ import AppliedFilters from './AppliedFilters.vue'
 import ProductControlsPlaceholder from './ProductControlsPlaceholder.vue'
 import ProductResultsState from './ProductResultsState.vue'
 import ProductGrid from './ProductGrid.vue'
+import { sortProducts } from '~/utils/productSort'
 import type { Product } from '~/types/product'
 
 const props = withDefaults(
   defineProps<{
-    products: readonly Pick<Product, 'id' | 'title' | 'image' | 'available'>[]
+    products: readonly Product[]
     loading?: boolean
     failed?: boolean
   }>(),
@@ -15,18 +16,17 @@ const props = withDefaults(
 )
 defineEmits<{ retry: [] }>()
 
-const { search, draft, available, submitSearch, clearSearch } = useProductFilters()
+const { search, draft, available, sort, submitSearch, clearSearch } = useProductFilters()
 const filteredProducts = computed(() =>
-  props.products.filter(
-    (product) =>
-      product.title.toLowerCase().includes(search.value) && (!available.value || product.available)
+  sortProducts(
+    props.products.filter(
+      (product) =>
+        product.title.toLowerCase().includes(search.value) &&
+        (!available.value || product.available)
+    ),
+    sort.value
   )
 )
-
-function measureFilters(element: Element) {
-  const section = element as HTMLElement
-  section.style.setProperty('--filters-height', `${section.scrollHeight}px`)
-}
 </script>
 
 <template>
@@ -35,15 +35,17 @@ function measureFilters(element: Element) {
     <ProductControlsPlaceholder
       v-model:search="draft"
       v-model:available="available"
+      v-model:sort="sort"
       class="controls"
       @search="submitSearch"
     />
     <div class="product-results">
-      <Transition name="filters" @enter="measureFilters" @before-leave="measureFilters">
-        <div v-if="search" class="applied-filters-card">
-          <AppliedFilters :search="search" @remove-search="clearSearch" />
-        </div>
-      </Transition>
+      <AppliedFilters
+        class="applied-filters-card"
+        :search="search"
+        :sort="sort"
+        @remove-search="clearSearch"
+      />
       <ProductResultsState
         v-if="loading || failed"
         class="results-grid"
@@ -75,29 +77,7 @@ h1 {
 }
 
 .applied-filters-card {
-  --filters-gap: var(--space-4);
-
   order: -1;
-  min-block-size: 0;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-}
-
-.filters-enter-active,
-.filters-leave-active {
-  block-size: var(--filters-height);
-  transition:
-    block-size var(--transition-duration) ease,
-    margin-block-end var(--transition-duration) ease,
-    opacity var(--transition-duration) ease;
-}
-
-.filters-enter-from,
-.filters-leave-to {
-  block-size: 0;
-  // Cancel the parent's extra flex gap while the section is fully collapsed.
-  margin-block-end: calc(-1 * var(--filters-gap));
-  opacity: 0;
 }
 
 .product-list .results-grid {
@@ -127,8 +107,6 @@ h1 {
   }
 
   .applied-filters-card {
-    --filters-gap: var(--space-6);
-
     order: 0;
   }
 

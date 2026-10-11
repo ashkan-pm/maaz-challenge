@@ -1,8 +1,8 @@
-<script setup lang="ts">
-withDefaults(defineProps<{ name: string; value: string; label: string; disabled?: boolean }>(), {
+<script setup lang="ts" generic="Value extends string">
+withDefaults(defineProps<{ name: string; value: Value; label: string; disabled?: boolean }>(), {
   disabled: false
 })
-const model = defineModel<string>()
+const model = defineModel<Value>()
 </script>
 
 <template>

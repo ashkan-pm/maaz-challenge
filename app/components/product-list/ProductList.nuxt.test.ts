@@ -1,6 +1,7 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { enableAutoUnmount, flushPromises } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
+import { SEARCH_MAX_LENGTH } from '~/utils/productSearch'
 import ProductList from './ProductList.vue'
 import { product } from '~~/test/fixtures/products'
 enableAutoUnmount(afterEach)
@@ -49,8 +50,8 @@ describe('URL-driven product search', () => {
       props: { products },
       route: '/?category=jewelery#product-list-title'
     })
-    expect(wrapper.findAll('.filter-chip')).toHaveLength(0)
-    expect(wrapper.find('.applied-filters').exists()).toBe(false)
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+    expect(wrapper.find('.applied-filters').exists()).toBe(true)
     await wrapper.get('input').setValue('  RING  ')
     await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
     await wrapper.get('form').trigger('submit')
@@ -67,8 +68,8 @@ describe('URL-driven product search', () => {
     await expect
       .poll(() => wrapper.vm.$router.currentRoute.value.query)
       .toEqual({ category: 'jewelery' })
-    expect(wrapper.findAll('.filter-chip')).toHaveLength(0)
-    expect(wrapper.find('.applied-filters').exists()).toBe(false)
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+    expect(wrapper.find('.applied-filters').exists()).toBe(true)
     expect((wrapper.get('input').element as HTMLInputElement).value).toBe('')
     await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
   })
@@ -92,18 +93,22 @@ describe('URL-driven product search', () => {
 })
 
 describe('search length limit', () => {
-  it('limits direct URL searches and submitted searches to 50 characters', async () => {
+  it('limits direct URL searches and submitted searches to the configured maximum', async () => {
     const wrapper = await mountSuspended(ProductList, {
       props: { products: [product] },
       route: `/?search=${'A'.repeat(60)}`
     })
-    expect(wrapper.get('input').attributes('maxlength')).toBe('50')
-    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('a'.repeat(50))
-    expect(wrapper.get('.chip-label').text()).toBe('a'.repeat(50))
+    expect(wrapper.get('input').attributes('maxlength')).toBe(String(SEARCH_MAX_LENGTH))
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe(
+      'a'.repeat(SEARCH_MAX_LENGTH)
+    )
+    expect(wrapper.get('.chip-label').text()).toBe('a'.repeat(SEARCH_MAX_LENGTH))
     await wrapper.get('input').setValue('B'.repeat(60))
     await wrapper.get('form').trigger('submit')
-    await expect.poll(() => wrapper.vm.$router.currentRoute.value.query.search).toBe('b'.repeat(50))
-    await expect.poll(() => wrapper.get('.chip-label').text()).toBe('b'.repeat(50))
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query.search)
+      .toBe('b'.repeat(SEARCH_MAX_LENGTH))
+    await expect.poll(() => wrapper.get('.chip-label').text()).toBe('b'.repeat(SEARCH_MAX_LENGTH))
   })
 })
 
@@ -117,7 +122,7 @@ describe('URL-driven availability filter', () => {
     })
     expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('true')
     expect(wrapper.findAll('.product-card')).toHaveLength(1)
-    expect(wrapper.find('.applied-filters').exists()).toBe(false)
+    expect(wrapper.find('.applied-filters').exists()).toBe(true)
     await wrapper.vm.$router.push('/?available=invalid')
     await expect.poll(() => wrapper.findAll('.product-card').length).toBe(2)
     expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('false')
@@ -137,7 +142,7 @@ describe('URL-driven availability filter', () => {
         available: 'true'
       })
     await expect.poll(() => wrapper.findAll('.product-card').length).toBe(1)
-    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(2)
     await wrapper.get('.remove-button').trigger('click')
     await expect
       .poll(() => wrapper.vm.$router.currentRoute.value.query)
@@ -145,7 +150,7 @@ describe('URL-driven availability filter', () => {
         category: 'clothing',
         available: 'true'
       })
-    await expect.poll(() => wrapper.find('.applied-filters').exists()).toBe(false)
+    await expect.poll(() => wrapper.find('.applied-filters').exists()).toBe(true)
     expect(wrapper.findAll('.product-card')).toHaveLength(1)
     await wrapper.get('[role="switch"]').trigger('click')
     await expect.poll(() => wrapper.vm.$router.currentRoute.value.query.available).toBe('false')
@@ -154,5 +159,63 @@ describe('URL-driven availability filter', () => {
     await expect.poll(() => wrapper.findAll('.product-card').length).toBe(0)
     expect(wrapper.get('[role="status"]').text()).toContain('محصولی پیدا نشد')
     expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('true')
+  })
+})
+
+describe('URL-driven sorting', () => {
+  const products = [
+    { ...product, id: 1, title: 'Low Stock', stockQuantity: 2, rating: { rate: 5, count: 1 } },
+    { ...product, id: 2, title: 'High Stock', stockQuantity: 20, rating: { rate: 2, count: 999 } }
+  ]
+
+  it('defaults to quantity-desc with a permanent chip and the requested option order', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?sort=invalid'
+    })
+    expect(wrapper.findAll('.product-card h2').map((item) => item.text())).toEqual([
+      'High Stock',
+      'Low Stock'
+    ])
+    expect(
+      wrapper.findAll('input[type="radio"]').map((input) => input.attributes('value'))
+    ).toEqual(['quantity-desc', 'quantity-asc', 'rating-desc', 'rating-asc'])
+    expect((wrapper.get('input[value="quantity-desc"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
+    expect(wrapper.get('.chip-label').text()).toBe('تعداد: زیاد به کم')
+    expect(wrapper.find('.filter-chip button').exists()).toBe(false)
+    expect(wrapper.get('.filter-chip use').attributes('href')).toBe('/images/ui/sort-desc.svg#icon')
+  })
+
+  it('updates the URL, products, and chip while preserving search and availability', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?search=stock&available=true'
+    })
+    await wrapper.get('input[value="rating-desc"]').setValue(true)
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query)
+      .toEqual({
+        search: 'stock',
+        available: 'true',
+        sort: 'rating-desc'
+      })
+    await expect
+      .poll(() => wrapper.findAll('.product-card h2').map((item) => item.text()))
+      .toEqual(['Low Stock', 'High Stock'])
+    expect(wrapper.findAll('.filter-chip')).toHaveLength(2)
+    expect(wrapper.findAll('.filter-chip button')).toHaveLength(1)
+    await wrapper.vm.$router.push('/?sort=rating-asc')
+    await expect.poll(() => wrapper.get('.chip-label').text()).toBe('رتبه: کم به زیاد')
+    expect(wrapper.get('.filter-chip use').attributes('href')).toBe('/images/ui/sort.svg#icon')
+    expect((wrapper.get('input[value="rating-asc"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    await wrapper.vm.$router.push('/?sort=quantity-asc')
+    await expect
+      .poll(() => wrapper.findAll('.product-card h2').map((item) => item.text()))
+      .toEqual(['Low Stock', 'High Stock'])
   })
 })

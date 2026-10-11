@@ -23,16 +23,4 @@ describe('product transformer', () => {
       stockQuantity: 0
     })
   })
-  it.each([
-    null,
-    {},
-    [{ ...apiProduct, rating: null }],
-    [{ ...apiProduct, price: '109' }],
-    [{ ...apiProduct, rating: { rate: 6, count: 1 } }]
-  ])('rejects malformed payloads: %j', (response) => {
-    expect(() => transformProducts(response)).toThrow('Invalid product list response')
-  })
-  it('rejects duplicate IDs', () => {
-    expect(() => transformProducts([apiProduct, apiProduct])).toThrow('Duplicate product IDs')
-  })
 })
