@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import Card from '~/components/ui/Card.vue'
 import Button from '~/components/ui/Button.vue'
 import Input from '~/components/ui/Input.vue'
 </script>
 
 <template>
-  <form class="search-control" role="search" aria-labelledby="product-search-title" @submit.prevent>
+  <Card
+    as="form"
+    class="search-control"
+    role="search"
+    aria-labelledby="product-search-title"
+    @submit.prevent
+  >
     <h2 id="product-search-title">فیلتر و جستجو</h2>
     <Input label="جستجوی محصولات" icon="search" placeholder="جستجو..." clearable />
     <Button type="submit">جستجو</Button>
-  </form>
+  </Card>
 </template>
 
 <style scoped lang="scss">
@@ -16,9 +23,6 @@ import Input from '~/components/ui/Input.vue'
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
 }
 
 h2 {

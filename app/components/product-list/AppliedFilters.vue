@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import Card from '~/components/ui/Card.vue'
 import FilterChip from '~/components/ui/FilterChip.vue'
 </script>
 
 <template>
-  <div class="applied-filters" role="group" aria-labelledby="applied-filters-title">
+  <Card class="applied-filters" role="group" aria-labelledby="applied-filters-title">
     <h2 id="applied-filters-title">فیلترهای اعمال شده</h2>
     <div class="filter-chips">
       <FilterChip label="دولنگه" icon="search" />
       <FilterChip label="تعداد" icon="sort" />
       <FilterChip label="تعداد نزولی" icon="sort-desc" />
     </div>
-  </div>
+  </Card>
 </template>
 
 <style scoped lang="scss">
@@ -21,9 +22,6 @@ import FilterChip from '~/components/ui/FilterChip.vue'
   justify-content: space-between;
   gap: var(--space-4) var(--space-6);
   min-block-size: var(--space-16);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
 }
 
 h2 {

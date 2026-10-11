@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import Card from '~/components/ui/Card.vue'
 import Toggle from '~/components/ui/Toggle.vue'
 </script>
 
 <template>
-  <div class="availability-control">
+  <Card class="availability-control">
     <h2>محصولات موجود</h2>
     <Toggle label="فقط محصولات موجود" />
-  </div>
+  </Card>
 </template>
 
 <style scoped lang="scss">
@@ -17,8 +18,6 @@ import Toggle from '~/components/ui/Toggle.vue'
   gap: var(--space-4);
   min-block-size: var(--space-12);
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
 }
 
 h2 {
