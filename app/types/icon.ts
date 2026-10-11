@@ -12,3 +12,4 @@ export type IconName =
   | FilterChipIconName
   | 'close'
   | 'dots'
+  | 'check'

@@ -3,15 +3,19 @@ import type { IconName } from '~/types/icon'
 
 const props = defineProps<{ name: IconName }>()
 const size = computed(() => {
+  if (props.name === 'check') return 9
   if (props.name === 'dots') return 6
   if (props.name === 'close') return 8
   if (['phone', 'search', 'sort', 'sort-desc'].includes(props.name)) return 14
   if (['menu', 'category', 'book', 'question'].includes(props.name)) return 16
   return 24
 })
-const height = computed(() => (['sort', 'sort-desc'].includes(props.name) ? 8 : size.value))
+const height = computed(() => {
+  if (props.name === 'check') return 7
+  return ['sort', 'sort-desc'].includes(props.name) ? 8 : size.value
+})
 const source = computed(() => {
-  const directory = ['close', 'search', 'sort', 'sort-desc', 'dots'].includes(props.name)
+  const directory = ['close', 'search', 'sort', 'sort-desc', 'dots', 'check'].includes(props.name)
     ? 'ui'
     : 'layout'
   return `/images/${directory}/${props.name}.svg#icon`
