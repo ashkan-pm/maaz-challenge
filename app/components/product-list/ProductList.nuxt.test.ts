@@ -283,3 +283,96 @@ describe('URL-driven categories', () => {
     expect(wrapper.get('[role="status"]').text()).toContain('محصولی پیدا نشد')
   })
 })
+
+describe('filter state lifecycle', () => {
+  const products = [
+    { ...product, id: 1, title: 'Cotton Shirt', category: "men's clothing", stockQuantity: 4 },
+    { ...product, id: 2, title: 'Silver Ring', category: 'jewelery', stockQuantity: 12 },
+    {
+      ...product,
+      id: 3,
+      title: 'Gold Ring',
+      category: 'jewelery',
+      available: false,
+      stockQuantity: 0
+    }
+  ]
+
+  it('keeps edits and the input clear button local until submitting, preserving other filters', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products },
+      route: '/?search=silver&available=true&sort=quantity-asc&category=jewelery'
+    })
+    await wrapper.get('input').setValue('gold')
+    expect(wrapper.get('.product-card h2').text()).toBe('Silver Ring')
+    expect(wrapper.get('.chip-label').text()).toBe('silver')
+    await wrapper.get('.clear-button').trigger('click')
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('')
+    expect(wrapper.get('.chip-label').text()).toBe('silver')
+    expect(wrapper.vm.$router.currentRoute.value.query.search).toBe('silver')
+    await wrapper.get('form').trigger('submit')
+    await expect
+      .poll(() => wrapper.vm.$router.currentRoute.value.query)
+      .toEqual({
+        available: 'true',
+        sort: 'quantity-asc',
+        category: 'jewelery'
+      })
+    await expect.poll(() => wrapper.get('.chip-label').text()).toBe('تعداد: کم به زیاد')
+    expect(wrapper.get('.product-card h2').text()).toBe('Silver Ring')
+  })
+
+  it('applies categories from the URL when initially empty data arrives', async () => {
+    const wrapper = await mountSuspended(ProductList, {
+      props: { products: [], loading: true },
+      route: '/?category=jewelery&search=ring&available=true'
+    })
+    expect(wrapper.find('[aria-busy="true"]').exists()).toBe(true)
+    await wrapper.setProps({ products, loading: false })
+    expect(wrapper.findAll('.product-card')).toHaveLength(1)
+    expect(wrapper.get('.product-card h2').text()).toBe('Silver Ring')
+    expect((wrapper.get('input[aria-label="Jewelery"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    expect(wrapper.findAll('.category-options .badge').map((badge) => badge.text())).toEqual([
+      '۰',
+      '۱'
+    ])
+  })
+
+  it('restores products, chips, and all controls through back and forward navigation', async () => {
+    const wrapper = await mountSuspended(ProductList, { props: { products }, route: '/' })
+    const router = wrapper.vm.$router
+    await router.push('/?search=ring&available=true&sort=quantity-asc&category=jewelery')
+    await expect.poll(() => wrapper.findAll('.product-card').length).toBe(1)
+    await router.push(
+      '/?search=cotton&available=false&sort=rating-desc&category=men%27s%20clothing'
+    )
+    await expect.poll(() => wrapper.get('.product-card h2').text()).toBe('Cotton Shirt')
+    router.back()
+    await expect.poll(() => router.currentRoute.value.query.search).toBe('ring')
+    await expect.poll(() => wrapper.get('.product-card h2').text()).toBe('Silver Ring')
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('ring')
+    expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('true')
+    expect((wrapper.get('input[value="quantity-asc"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    expect((wrapper.get('input[aria-label="Jewelery"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    expect(wrapper.findAll('.chip-label').map((chip) => chip.text())).toEqual([
+      'ring',
+      'تعداد: کم به زیاد'
+    ])
+    router.forward()
+    await expect.poll(() => wrapper.get('.product-card h2').text()).toBe('Cotton Shirt')
+    expect((wrapper.get('input').element as HTMLInputElement).value).toBe('cotton')
+    expect(wrapper.get('[role="switch"]').attributes('aria-checked')).toBe('false')
+    expect((wrapper.get('input[value="rating-desc"]').element as HTMLInputElement).checked).toBe(
+      true
+    )
+    expect(
+      (wrapper.get('input[aria-label="Men\'s Clothing"]').element as HTMLInputElement).checked
+    ).toBe(true)
+  })
+})
