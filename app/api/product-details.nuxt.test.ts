@@ -1,5 +1,4 @@
 import { mountSuspended, registerEndpoint } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
 import { clearNuxtData, useNuxtData } from '#imports'
 import { defineComponent, h } from 'vue'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -10,7 +9,6 @@ import type { Product } from '~/types/product'
 vi.mock('~/api/endpoints', () => ({
   buildApiEndpoint: (endpoint: string) => `/__test/detail${endpoint}`
 }))
-enableAutoUnmount(afterEach)
 const endpoints: (() => void)[] = []
 beforeEach(() => clearNuxtData((key) => key.startsWith('product:')))
 afterEach(() => {

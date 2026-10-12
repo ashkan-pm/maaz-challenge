@@ -1,10 +1,7 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import ProductSpecificationsCard from './ProductSpecificationsCard.vue'
 import { product } from '~~/test/fixtures/products'
-
-enableAutoUnmount(afterEach)
 
 describe('ProductSpecificationsCard', () => {
   it('maps API content and mock inventory to labeled fields with Farsi numerals', async () => {

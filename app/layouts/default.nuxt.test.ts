@@ -1,6 +1,5 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { h } from 'vue'
 import DefaultLayout from './default.vue'
 import HomePage from '~/pages/index.vue'
@@ -9,8 +8,6 @@ vi.mock('~/api/products', async () => {
   const { createProductsResult } = await import('~~/test/fixtures/products')
   return { useProducts: createProductsResult }
 })
-
-enableAutoUnmount(afterEach)
 
 describe('default layout', () => {
   it('renders the live homepage between the shared header and footer', async () => {

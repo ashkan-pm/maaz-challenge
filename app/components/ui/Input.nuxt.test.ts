@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Input from './Input.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Input', () => {
   it('renders a labelled native input without icon or divider when no icon is provided', async () => {

@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import SiteFooter from './SiteFooter.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('site footer', () => {
   it('labels its navigation groups and keeps unspecified destinations on the homepage', async () => {

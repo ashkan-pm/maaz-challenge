@@ -1,10 +1,7 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import CategoryControl from './CategoryControl.vue'
 import Badge from '~/components/ui/Badge.vue'
-
-enableAutoUnmount(afterEach)
 
 const options = [
   { value: "men's clothing", label: "Men's Clothing", count: 2 },

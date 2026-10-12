@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Modal from './Modal.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Modal', () => {
   it('opens with an accessible label, locks scrolling and restores focus after dismissal', async () => {

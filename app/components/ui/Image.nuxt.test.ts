@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Image from './Image.vue'
-
-enableAutoUnmount(afterEach)
 
 const props = { src: 'https://example.com/product.png', alt: 'A backpack' }
 

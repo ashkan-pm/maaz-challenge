@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import SiteHeader from './SiteHeader.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('site header', () => {
   it('composes desktop navigation, an accessible mobile toggle, and the contact link', async () => {

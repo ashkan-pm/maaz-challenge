@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Toggle from './Toggle.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Toggle', () => {
   it('starts off and exposes its label and state while toggling in both directions', async () => {

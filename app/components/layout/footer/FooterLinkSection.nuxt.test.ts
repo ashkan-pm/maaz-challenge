@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import FooterLinkSection from './FooterLinkSection.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('footer link section', () => {
   it('renders labelled links with optional decorative icons and reacts to new items', async () => {

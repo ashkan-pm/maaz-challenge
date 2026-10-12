@@ -1,13 +1,11 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import ProductImageCard from './ProductImageCard.vue'
 
-enableAutoUnmount(afterEach)
+const product = { id: 1, title: 'Backpack', image: 'https://example.com/backpack.jpg' }
 
 describe('ProductImageCard preview', () => {
   it('opens the original image and dismisses it with the reusable close icon', async () => {
-    const product = { id: 1, title: 'Backpack', image: 'https://example.com/backpack.jpg' }
     const wrapper = await mountSuspended(ProductImageCard, {
       attachTo: document.body,
       props: { product }
@@ -30,7 +28,7 @@ describe('ProductImageCard preview', () => {
     async (event) => {
       const wrapper = await mountSuspended(ProductImageCard, {
         attachTo: document.body,
-        props: { product: { id: 1, title: 'Backpack', image: 'https://example.com/backpack.jpg' } }
+        props: { product }
       })
       const initialOverflow = document.body.style.overflow
       for (let cycle = 0; cycle < 2; cycle++) {

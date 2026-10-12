@@ -1,14 +1,11 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, reactive } from 'vue'
 import HeaderNavigationLinks from './HeaderNavigationLinks.vue'
 import { headerNavigation } from './navigation'
 
 const routeState = vi.hoisted(() => ({ route: { path: '/' } }))
 mockNuxtImport('useRoute', () => () => routeState.route)
-
-enableAutoUnmount(afterEach)
 
 beforeEach(() => {
   routeState.route = reactive({ path: '/' })
