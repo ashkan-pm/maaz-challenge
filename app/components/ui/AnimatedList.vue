@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Render items with v-for, not v-if: SSR keeps v-if placeholder comments that TransitionGroup
+// drops on the client, which causes hydration mismatches.
 withDefaults(defineProps<{ tag?: 'div' | 'ul' }>(), { tag: 'div' })
 
 function prepareLeavingItem(element: Element) {
