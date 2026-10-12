@@ -47,17 +47,24 @@ The server defaults to **http://localhost:3000**; configure it with `PORT` and `
 ## Structure
 
 ```text
-app/                       Application entry point and components
-app/api/                   Requests, endpoint builder, transformers, mock inventory
-public/                    Static assets served directly
-app/**/*.nuxt.test.ts      Colocated Nuxt component and layout tests
-test/unit/                 Node unit tests
-.github/workflows/ci.yml   Continuous integration
-.husky/pre-commit          Staged-file checks
-nuxt.config.ts             Application configuration
-eslint.config.mjs          Nuxt lint rules and Prettier integration
-vitest.config.ts           Node unit and Nuxt runtime test projects
+app/
+├── api/                 Requests, endpoints, transformers, mock inventory
+├── components/
+│   ├── layout/          Site header and footer
+│   ├── product-list/    Product list page: filters, search, sorting, grid
+│   ├── product-details/ Product details page: image, preview, specifications
+│   └── ui/              Reusable primitives shared across pages
+├── composables/         Shared stateful logic
+├── layouts/             Page shells
+├── pages/               Routes
+├── plugins/             Nuxt plugins
+├── types/               TypeScript types
+└── utils/               Pure helpers
+public/                  Static assets: fonts and images
+test/                    Unit tests and shared fixtures
 ```
+
+Nuxt tests are colocated with their sources as `*.nuxt.test.ts`.
 
 ## Code quality and testing
 
