@@ -18,9 +18,32 @@ describe('ProductImageCard preview', () => {
       src: product.image,
       alt: product.title
     })
+    await wrapper.get('dialog img').trigger('click')
+    expect(wrapper.get('dialog').element.open).toBe(true)
     const close = wrapper.get('[aria-label="بستن پیش‌نمایش"]')
     expect(close.get('use').attributes('href')).toBe('/images/ui/close.svg#icon')
     await close.trigger('click')
     expect(wrapper.get('dialog').element.open).toBe(false)
   })
+  it.each(['click', 'cancel'])(
+    'dismisses via %s and can reopen without leaving scrolling locked',
+    async (event) => {
+      const wrapper = await mountSuspended(ProductImageCard, {
+        attachTo: document.body,
+        props: { product: { id: 1, title: 'Backpack', image: 'https://example.com/backpack.jpg' } }
+      })
+      const initialOverflow = document.body.style.overflow
+      for (let cycle = 0; cycle < 2; cycle++) {
+        const trigger = wrapper.get<HTMLButtonElement>('[aria-haspopup="dialog"]')
+        trigger.element.focus()
+        await trigger.trigger('click')
+        expect(wrapper.get('dialog').element.open).toBe(true)
+        expect(document.body.style.overflow).toBe('hidden')
+        await wrapper.get('dialog').trigger(event)
+        expect(wrapper.get('dialog').element.open).toBe(false)
+        expect(document.body.style.overflow).toBe(initialOverflow)
+        expect(document.activeElement).toBe(trigger.element)
+      }
+    }
+  )
 })
