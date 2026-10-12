@@ -25,3 +25,11 @@ Decisions made beyond the challenge brief, including behavior where the supplied
 21. **Component structure:** Components are grouped by responsibility and use explicit imports; only reusable primitives belong in `ui/`. Requests, endpoint construction, transformation, and fixed inventory have separate responsibilities in the API layer.
 22. **Styling and assets:** Scoped SCSS handles component styles, while global SCSS holds shared tokens and resets. Exported Figma SVGs preserve the supplied icons without unnecessary variants.
 23. **Testing and checks:** Component tests are colocated and mock requests to stay independent of the network; pure utility tests run separately. Pre-commit checks process staged files only, while five separate CI jobs cover formatting, lint, types, tests, and the production build; ESLint also rejects `console.log`.
+24. **English content alignment:** Product titles and descriptions on the detail page are left-aligned within the otherwise RTL page.
+25. **Product images:** Images use contain sizing to show the entire product without cropping.
+26. **Image preview:** A reusable modal displays the original-size image, shrinking it when necessary to fit the viewport.
+27. **Modal interactions:** A dark, blurred overlay covers the page. The close button, outside clicks, and Escape dismiss the preview, and focus returns to the trigger.
+28. **Modal animation:** The image and overlay fade together using the shared transition duration and respect reduced-motion preferences.
+29. **Detail formatting:** Numeric values use Farsi numerals, prices retain their original dollar value, and category names remain English and capitalized.
+30. **Missing products:** A custom 404 page follows the empty-state styling and offers a return-to-products button.
+31. **Product request failures:** Temporary fetching errors show an inline retry state, while invalid or missing product IDs show the 404 page.
