@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import FooterSocialLinks from './FooterSocialLinks.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('footer social links', () => {
   it('provides accessible platform names with one decorative icon per link', async () => {

@@ -12,7 +12,7 @@ const items = [
 
 <template>
   <nav class="social-icons" aria-label="شبکه‌های اجتماعی">
-    <NuxtLink v-for="item in items" :key="item.icon" to="/" :aria-label="item.label">
+    <NuxtLink v-for="item in items" :key="item.label" to="/" :aria-label="item.label">
       <AppIcon class="social-icon" :name="item.icon" />
     </NuxtLink>
   </nav>

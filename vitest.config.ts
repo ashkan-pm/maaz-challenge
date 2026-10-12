@@ -18,6 +18,7 @@ export default defineConfig({
           name: 'nuxt',
           include: ['app/**/*.nuxt.test.ts', 'test/nuxt/**/*.test.ts'],
           environment: 'nuxt',
+          setupFiles: ['test/nuxt/setup.ts'],
           clearMocks: true,
           restoreMocks: true
         }

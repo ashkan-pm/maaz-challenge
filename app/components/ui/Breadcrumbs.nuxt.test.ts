@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Breadcrumbs from './Breadcrumbs.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Breadcrumbs', () => {
   it('labels the icon link, separates items with the existing caret, and marks the current page', async () => {

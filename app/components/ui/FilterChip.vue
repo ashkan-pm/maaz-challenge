@@ -32,7 +32,7 @@ defineEmits<{ remove: [] }>()
   max-inline-size: 100%;
   padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
   border-radius: var(--radius-lg);
-  background: #fce6ef;
+  background: var(--color-primary-tint);
   color: var(--color-heading);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-regular);

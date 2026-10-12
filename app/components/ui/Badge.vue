@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { formatFarsiNumber } from '~/utils/formatNumber'
+
 const props = withDefaults(defineProps<{ count: number; active?: boolean }>(), { active: false })
-const formatter = new Intl.NumberFormat('fa-IR', { useGrouping: false })
-const formattedCount = computed(() => formatter.format(props.count))
+const formattedCount = computed(() => formatFarsiNumber(props.count, { useGrouping: false }))
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const formattedCount = computed(() => formatter.format(props.count))
   block-size: var(--space-6);
   padding-inline: var(--space-1);
   border-radius: var(--radius-xs);
-  background: #171b2a;
+  background: var(--color-surface-dark);
   color: var(--color-surface);
   font-family: var(--font-family-content);
   font-size: var(--font-size-xs);

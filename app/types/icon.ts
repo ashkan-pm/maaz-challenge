@@ -15,3 +15,4 @@ export type IconName =
   | 'close'
   | 'dots'
   | 'check'
+  | 'caret'

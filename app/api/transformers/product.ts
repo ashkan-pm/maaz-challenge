@@ -1,3 +1,4 @@
+import { PRODUCT_LIMIT } from '../constants'
 import { productInventory, unknownInventory } from '../fixtures/product-inventory'
 import type { ApiProduct, Product } from '~/types/product'
 
@@ -10,5 +11,5 @@ export function transformProduct(product: ApiProduct): Product {
 }
 
 export function transformProducts(response: readonly ApiProduct[]): Product[] {
-  return response.slice(0, 18).map(transformProduct)
+  return response.slice(0, PRODUCT_LIMIT).map(transformProduct)
 }

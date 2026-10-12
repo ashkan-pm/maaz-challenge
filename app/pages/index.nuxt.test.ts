@@ -1,6 +1,5 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { useProducts } from '~/api/products'
 import { product } from '~~/test/fixtures/products'
 import type { Product } from '~/types/product'
@@ -10,8 +9,6 @@ vi.mock('~/api/products', async () => {
   const { createProductsResult } = await import('~~/test/fixtures/products')
   return { useProducts: vi.fn(createProductsResult) }
 })
-
-enableAutoUnmount(afterEach)
 
 describe('homepage', () => {
   it('sets the document title and gives the product-list region an accessible heading', async () => {

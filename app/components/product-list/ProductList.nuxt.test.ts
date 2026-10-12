@@ -1,11 +1,10 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import type { VueWrapper } from '@vue/test-utils'
-import { enableAutoUnmount, flushPromises } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { flushPromises } from '@vue/test-utils'
+import { describe, expect, it } from 'vitest'
 import { SEARCH_MAX_LENGTH } from '~/utils/productSearch'
 import ProductList from './ProductList.vue'
 import { product } from '~~/test/fixtures/products'
-enableAutoUnmount(afterEach)
 describe('product results', () => {
   it('renders fetched products and keeps controls visible', async () => {
     const wrapper = await mountSuspended(ProductList, { props: { products: [product] } })

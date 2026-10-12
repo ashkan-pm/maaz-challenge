@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Badge from './Badge.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Badge', () => {
   it('formats counts as Farsi numerals and updates when the count changes', async () => {

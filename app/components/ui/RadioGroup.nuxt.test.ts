@@ -1,10 +1,7 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { defineComponent, h } from 'vue'
 import RadioGroup from './RadioGroup.vue'
-
-enableAutoUnmount(afterEach)
 
 const options = [
   { label: 'Ascending', value: 'asc' },

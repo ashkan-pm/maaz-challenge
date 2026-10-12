@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Button from '~/components/ui/Button.vue'
-import Card from '~/components/ui/Card.vue'
+import StateCard from '~/components/ui/StateCard.vue'
 
 defineProps<{ state: 'loading' | 'error' | 'empty' }>()
 defineEmits<{ retry: [] }>()
 </script>
 
 <template>
-  <Card
+  <StateCard
     class="results-state"
     :role="state === 'error' ? 'alert' : 'status'"
     :aria-busy="state === 'loading'"
@@ -26,30 +26,10 @@ defineEmits<{ retry: [] }>()
       <h2>محصولی پیدا نشد</h2>
       <p>در حال حاضر محصولی برای نمایش وجود ندارد</p>
     </template>
-  </Card>
+  </StateCard>
 </template>
 
 <style scoped lang="scss">
-.results-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  min-block-size: 20rem;
-  text-align: center;
-}
-
-h2 {
-  color: var(--color-heading);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-}
-
-p {
-  color: var(--color-text-muted);
-}
-
 button {
   margin-block-start: var(--space-2);
 }

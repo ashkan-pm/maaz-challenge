@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from '~/components/ui/AppIcon.vue'
 import Button from '~/components/ui/Button.vue'
 import Image from '~/components/ui/Image.vue'
 import type { ProductSummary } from '~/types/product'
@@ -17,9 +18,7 @@ defineProps<{ product: ProductSummary }>()
       :aria-label="`مشاهده جزئیات: ${product.title}`"
     >
       مشاهده جزئیات
-      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-        <use href="/images/product-list/caret.svg#icon" />
-      </svg>
+      <AppIcon name="caret" />
     </Button>
   </article>
 </template>

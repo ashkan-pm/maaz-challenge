@@ -61,7 +61,7 @@ app/
 ├── types/               TypeScript types
 └── utils/               Pure helpers
 public/                  Static assets: fonts and images
-test/                    Unit tests and shared fixtures
+test/                    Unit tests, Nuxt test setup, and shared fixtures
 ```
 
 Nuxt tests are colocated with their sources as `*.nuxt.test.ts`.
@@ -72,7 +72,7 @@ Nuxt tests are colocated with their sources as `*.nuxt.test.ts`.
 
 Formatting uses two spaces, single quotes, no semicolons, trailing commas, a 100-character line width, and LF endings. Generated files and `pnpm-lock.yaml` are excluded from formatting.
 
-[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and colocated `*.nuxt.test.ts` component/layout tests in Nuxt with Vue Test Utils and happy-dom. Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior, unmount components, and mock API calls to keep tests independent of the network. Browser end-to-end tests and coverage thresholds are not configured.
+[Vitest and Nuxt Test Utils](https://nuxt.com/docs/4.x/getting-started/testing) run pure utility tests in Node (`test/unit/`) and colocated `*.nuxt.test.ts` component/layout tests in Nuxt with Vue Test Utils and happy-dom. Nuxt runtime tests are included in the app's TypeScript context. Assert observable behavior and mock API calls to keep tests independent of the network; `test/nuxt/setup.ts` unmounts components after each test. Browser end-to-end tests and coverage thresholds are not configured.
 
 ## Commit checks and CI
 

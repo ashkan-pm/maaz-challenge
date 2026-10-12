@@ -1,13 +1,11 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, reactive } from 'vue'
 import HeaderMobileNavigation from './HeaderMobileNavigation.vue'
 
 const routeState = vi.hoisted(() => ({ route: { path: '/' } }))
 mockNuxtImport('useRoute', () => () => routeState.route)
 
-enableAutoUnmount(afterEach)
 let media: MediaQueryList
 beforeEach(() => {
   routeState.route = reactive({ path: '/' })

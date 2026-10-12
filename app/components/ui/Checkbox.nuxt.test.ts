@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import Checkbox from './Checkbox.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Checkbox', () => {
   it('uses a labelled native checkbox and emits both checked states', async () => {

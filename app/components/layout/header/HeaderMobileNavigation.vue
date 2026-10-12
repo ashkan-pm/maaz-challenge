@@ -57,12 +57,7 @@ watch(
       <AppIcon name="menu" />
     </button>
     <Transition name="mobile-menu">
-      <HeaderMobileMenu
-        v-if="menuOpen"
-        :items="headerNavigation"
-        :inert="!menuOpen"
-        @select="closeMenu()"
-      />
+      <HeaderMobileMenu v-if="menuOpen" :items="headerNavigation" @select="closeMenu()" />
     </Transition>
   </div>
 </template>

@@ -81,7 +81,7 @@ const model = defineModel<boolean>({ default: false })
   }
 
   .toggle.is-active:not(:disabled):hover .toggle-track {
-    background: #c60049;
+    background: var(--color-primary-hover);
   }
 }
 </style>

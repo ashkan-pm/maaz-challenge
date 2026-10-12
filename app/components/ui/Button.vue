@@ -40,14 +40,14 @@ withDefaults(defineProps<{ to?: string; type?: 'button' | 'submit' | 'reset'; pa
   &:focus-visible,
   &:active {
     border-color: var(--color-primary);
-    background: var(--button-hover-background, #c60049);
+    background: var(--button-hover-background, var(--color-primary-hover));
     color: var(--color-surface);
   }
 
   @media (hover: hover) {
     &:hover {
       border-color: var(--color-primary);
-      background: var(--button-hover-background, #c60049);
+      background: var(--button-hover-background, var(--color-primary-hover));
       color: var(--color-surface);
     }
   }

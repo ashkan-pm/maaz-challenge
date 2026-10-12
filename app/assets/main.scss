@@ -13,6 +13,8 @@
 
   --color-primary: #e20054;
   --color-primary-soft: #f180a9;
+  --color-primary-hover: #c60049;
+  --color-primary-tint: #fce6ef;
   --color-heading: #0a2a51;
   --color-text-strong: #253343;
   --color-text: #30445b;
@@ -21,6 +23,8 @@
   --color-background: #e9edf5;
   --color-surface: #fff;
   --color-surface-subtle: #f8f9fc;
+  --color-surface-muted: #f5f7fa;
+  --color-surface-dark: #171b2a;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -126,6 +130,15 @@ a[href] {
   :root {
     --transition-duration: 0ms;
   }
+}
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .container {

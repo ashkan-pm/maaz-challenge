@@ -1,9 +1,6 @@
 import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { enableAutoUnmount } from '@vue/test-utils'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import Accordion from './Accordion.vue'
-
-enableAutoUnmount(afterEach)
 
 describe('Accordion', () => {
   it.each([false, true])(
