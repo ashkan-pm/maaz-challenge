@@ -3,11 +3,12 @@ import AppIcon from './AppIcon.vue'
 import type { IconName } from '~/types/icon'
 
 defineOptions({ inheritAttrs: false })
-withDefaults(defineProps<{ label: string; icon?: IconName; clearable?: boolean }>(), {
-  icon: undefined,
-  clearable: false
-})
+withDefaults(
+  defineProps<{ label: string; icon?: IconName; clearable?: boolean; name?: string }>(),
+  { icon: undefined, clearable: false, name: undefined }
+)
 const model = defineModel<string>({ default: '' })
+const generatedName = useId()
 const input = useTemplateRef<HTMLInputElement>('input')
 
 function focusInput() {
@@ -25,7 +26,14 @@ function clearInput() {
     <span v-if="icon" class="input-icon">
       <AppIcon :name="icon" />
     </span>
-    <input ref="input" v-model="model" v-bind="$attrs" :aria-label="label" class="text-input" />
+    <input
+      ref="input"
+      v-model="model"
+      v-bind="$attrs"
+      :name="name ?? generatedName"
+      :aria-label="label"
+      class="text-input"
+    />
     <button
       v-if="clearable"
       type="button"

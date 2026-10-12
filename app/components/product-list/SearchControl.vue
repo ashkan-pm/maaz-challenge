@@ -18,6 +18,7 @@ defineEmits<{ search: [] }>()
     <h2 id="product-search-title">فیلتر و جستجو</h2>
     <Input
       v-model="search"
+      name="search"
       :maxlength="SEARCH_MAX_LENGTH"
       label="جستجوی محصولات"
       icon="search"

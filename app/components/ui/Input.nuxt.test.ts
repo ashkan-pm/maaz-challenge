@@ -20,6 +20,11 @@ describe('Input', () => {
     })
   })
 
+  it('generates a name when none is provided', async () => {
+    const wrapper = await mountSuspended(Input, { props: { label: 'جستجو' } })
+    expect(wrapper.get('input').attributes('name')).toBeTruthy()
+  })
+
   it('focuses the native input when the icon, divider area or field padding is clicked', async () => {
     const wrapper = await mountSuspended(Input, {
       props: { label: 'جستجو', icon: 'search' },

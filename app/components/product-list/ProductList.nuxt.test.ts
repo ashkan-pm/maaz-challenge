@@ -50,8 +50,11 @@ describe('URL-driven product search', () => {
   it('waits for submission, normalizes the search, and preserves unrelated parameters', async () => {
     const wrapper = await mountSuspended(ProductList, {
       props: { products },
-      route: '/?category=jewelery#product-list-title'
+      route: '/?category=jewelery',
+      attachTo: document.body
     })
+    // Add the hash once its target is in the document, because the router scrolls to it.
+    await wrapper.vm.$router.replace('/?category=jewelery#product-list-title')
     expect(wrapper.findAll('.filter-chip')).toHaveLength(1)
     expect(wrapper.find('.applied-filters').exists()).toBe(true)
     await wrapper.get('input').setValue('  RING  ')

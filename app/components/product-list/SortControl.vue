@@ -9,6 +9,11 @@ const selectedSort = defineModel<ProductSort>({ default: DEFAULT_PRODUCT_SORT })
 
 <template>
   <Accordion title="مرتب سازی" default-open="desktop">
-    <RadioGroup v-model="selectedSort" label="مرتب سازی محصولات" :options="PRODUCT_SORT_OPTIONS" />
+    <RadioGroup
+      v-model="selectedSort"
+      name="sort"
+      label="مرتب سازی محصولات"
+      :options="PRODUCT_SORT_OPTIONS"
+    />
   </Accordion>
 </template>

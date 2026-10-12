@@ -1,14 +1,24 @@
 <script setup lang="ts">
 import AppIcon from './AppIcon.vue'
 
-withDefaults(defineProps<{ label: string; disabled?: boolean }>(), { disabled: false })
+withDefaults(defineProps<{ label: string; name?: string; disabled?: boolean }>(), {
+  name: undefined,
+  disabled: false
+})
 const model = defineModel<boolean>({ default: false })
+const generatedName = useId()
 </script>
 
 <template>
   <label class="checkbox">
     <span class="checkbox-control">
-      <input v-model="model" type="checkbox" :aria-label="label" :disabled="disabled" />
+      <input
+        v-model="model"
+        type="checkbox"
+        :name="name ?? generatedName"
+        :aria-label="label"
+        :disabled="disabled"
+      />
       <span class="checkbox-box" aria-hidden="true"><AppIcon name="check" /></span>
     </span>
     <span class="checkbox-label" dir="auto">{{ label }}</span>

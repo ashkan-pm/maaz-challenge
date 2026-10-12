@@ -2,6 +2,7 @@
 import Card from '~/components/ui/Card.vue'
 import AnimatedList from '~/components/ui/AnimatedList.vue'
 import FilterChip from '~/components/ui/FilterChip.vue'
+import type { FilterChipIconName } from '~/types/icon'
 import type { ProductSort } from '~/types/productSort'
 import { PRODUCT_SORT_OPTIONS } from '~/utils/productSort'
 const props = defineProps<{ search: string; sort: ProductSort }>()
@@ -10,7 +11,15 @@ const sortLabel = computed(
     PRODUCT_SORT_OPTIONS.find((option) => option.value === props.sort)?.label ??
     PRODUCT_SORT_OPTIONS[0].label
 )
-const sortIcon = computed(() => (props.sort.endsWith('-asc') ? 'sort' : 'sort-desc'))
+const sortIcon = computed<FilterChipIconName>(() =>
+  props.sort.endsWith('-asc') ? 'sort' : 'sort-desc'
+)
+const chips = computed(() => {
+  const sortChip = { key: 'sort', label: sortLabel.value, icon: sortIcon.value, removable: false }
+  return props.search
+    ? [{ key: 'search', label: props.search, icon: 'search' as const, removable: true }, sortChip]
+    : [sortChip]
+})
 defineEmits<{ removeSearch: [] }>()
 </script>
 
@@ -19,13 +28,13 @@ defineEmits<{ removeSearch: [] }>()
     <h2 id="applied-filters-title">فیلترهای اعمال شده</h2>
     <AnimatedList class="filter-chips">
       <FilterChip
-        v-if="search"
-        key="search"
-        :label="search"
-        icon="search"
+        v-for="chip in chips"
+        :key="chip.key"
+        :label="chip.label"
+        :icon="chip.icon"
+        :removable="chip.removable"
         @remove="$emit('removeSearch')"
       />
-      <FilterChip key="sort" :label="sortLabel" :icon="sortIcon" :removable="false" />
     </AnimatedList>
   </Card>
 </template>
