@@ -2,11 +2,12 @@
 import type { NuxtError } from '#app'
 import Card from '~/components/ui/Card.vue'
 import Button from '~/components/ui/Button.vue'
+import { PRODUCT_NOT_FOUND } from '~/api/constants'
 
 const props = defineProps<{ error: NuxtError }>()
 const isNotFound = computed(() => props.error.statusCode === 404)
 const isProductNotFound = computed(
-  () => isNotFound.value && props.error.statusMessage === 'Product not found'
+  () => isNotFound.value && props.error.statusMessage === PRODUCT_NOT_FOUND
 )
 const title = computed(() =>
   isProductNotFound.value

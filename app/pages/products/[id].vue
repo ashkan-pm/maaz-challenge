@@ -4,6 +4,7 @@ import Breadcrumbs from '~/components/ui/Breadcrumbs.vue'
 import ProductImageCard from '~/components/product-details/ProductImageCard.vue'
 import ProductSpecificationsCard from '~/components/product-details/ProductSpecificationsCard.vue'
 import ProductDetailsState from '~/components/product-details/ProductDetailsState.vue'
+import { PRODUCT_NOT_FOUND } from '~/api/constants'
 import type { BreadcrumbItem } from '~/types/breadcrumb'
 
 // Remount for each product so its request and SSR payload stay isolated by ID.
@@ -12,13 +13,13 @@ const route = useRoute()
 const rawId = route.params.id
 const id = typeof rawId === 'string' && /^[1-9]\d*$/.test(rawId) ? Number(rawId) : NaN
 if (!Number.isSafeInteger(id)) {
-  throw createError({ statusCode: 404, statusMessage: 'Product not found', fatal: true })
+  throw createError({ statusCode: 404, statusMessage: PRODUCT_NOT_FOUND, fatal: true })
 }
 
 const { data: product, status, error, refresh } = await useProduct(id)
 watchEffect(() => {
   if ((status.value === 'success' && !product.value) || error.value?.statusCode === 404) {
-    throw createError({ statusCode: 404, statusMessage: 'Product not found', fatal: true })
+    throw createError({ statusCode: 404, statusMessage: PRODUCT_NOT_FOUND, fatal: true })
   }
 })
 useHead(() => ({ title: product.value?.title ?? 'جزئیات محصول' }))

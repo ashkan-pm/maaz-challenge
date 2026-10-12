@@ -15,7 +15,7 @@ function select(event: MouseEvent, navigate: (event: MouseEvent) => unknown) {
 <template>
   <NuxtLink
     v-for="item in items"
-    :key="item.icon"
+    :key="item.label"
     v-slot="{ href, navigate }"
     :to="item.path ?? '/'"
     custom
