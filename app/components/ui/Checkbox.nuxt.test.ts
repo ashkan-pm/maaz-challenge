@@ -23,6 +23,15 @@ describe('Checkbox', () => {
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual([false])
   })
 
+  it('names the input from the name prop or a generated fallback', async () => {
+    const named = await mountSuspended(Checkbox, {
+      props: { label: 'Electronics', name: 'category' }
+    })
+    expect(named.get('input').attributes('name')).toBe('category')
+    const unnamed = await mountSuspended(Checkbox, { props: { label: 'Electronics' } })
+    expect(unnamed.get('input').attributes('name')).toBeTruthy()
+  })
+
   it('supports an externally controlled value and a disabled input', async () => {
     const wrapper = await mountSuspended(Checkbox, {
       props: { label: 'Electronics', modelValue: true }

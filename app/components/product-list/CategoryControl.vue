@@ -22,6 +22,7 @@ function toggleCategory(value: string, checked: boolean) {
         v-for="category in options"
         :key="category.value"
         :model-value="selected.includes(category.value)"
+        name="category"
         :label="category.label"
         @update:model-value="toggleCategory(category.value, $event)"
       >
