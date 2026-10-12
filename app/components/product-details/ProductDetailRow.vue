@@ -26,7 +26,7 @@ dd {
   margin: 0;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  background: #f5f7fa;
+  background: var(--color-surface-muted);
   overflow-wrap: anywhere;
 }
 

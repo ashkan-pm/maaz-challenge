@@ -30,7 +30,7 @@ import Button from '~/components/ui/Button.vue'
   .contact-link {
     --button-background: var(--color-primary);
     --button-color: var(--color-surface);
-    --button-hover-background: #c60049;
+    --button-hover-background: var(--color-primary-hover);
     --button-radius: var(--radius-md);
 
     inline-size: 107px;

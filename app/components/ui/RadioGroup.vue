@@ -15,7 +15,7 @@ const generatedName = useId()
 
 <template>
   <fieldset class="radio-group">
-    <legend>{{ label }}</legend>
+    <legend class="visually-hidden">{{ label }}</legend>
     <RadioButton
       v-for="option in options"
       :key="option.value"
@@ -37,14 +37,5 @@ const generatedName = useId()
   margin: 0;
   padding: 0;
   border: 0;
-}
-
-legend {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 </style>

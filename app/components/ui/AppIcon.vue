@@ -8,7 +8,7 @@ const size = computed(() => {
   if (props.name === 'dots') return 6
   if (props.name === 'close') return 8
   if (['phone', 'search', 'sort', 'sort-desc'].includes(props.name)) return 14
-  if (['menu', 'category', 'book', 'question'].includes(props.name)) return 16
+  if (['menu', 'category', 'book', 'question', 'caret'].includes(props.name)) return 16
   return 24
 })
 const height = computed(() => {
@@ -27,7 +27,9 @@ const source = computed(() => {
     'check'
   ].includes(props.name)
     ? 'ui'
-    : 'layout'
+    : props.name === 'caret'
+      ? 'product-list'
+      : 'layout'
   return `/images/${directory}/${props.name}.svg#icon`
 })
 </script>

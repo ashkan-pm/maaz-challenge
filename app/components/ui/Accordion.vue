@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import AppIcon from './AppIcon.vue'
 import Card from './Card.vue'
 
 const props = withDefaults(defineProps<{ title: string; defaultOpen?: boolean | 'desktop' }>(), {
@@ -39,16 +40,7 @@ onMounted(() => {
         @click="open = !isOpen"
       >
         {{ title }}
-        <svg
-          class="chevron"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <use href="/images/product-list/caret.svg#icon" />
-        </svg>
+        <AppIcon class="chevron" name="caret" />
       </button>
     </h2>
     <div

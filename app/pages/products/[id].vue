@@ -17,6 +17,7 @@ if (!Number.isSafeInteger(id)) {
 }
 
 const { data: product, status, error, refresh } = await useProduct(id)
+const loading = computed(() => status.value === 'pending' || status.value === 'idle')
 watchEffect(() => {
   if ((status.value === 'success' && !product.value) || error.value?.statusCode === 404) {
     throw createError({ statusCode: 404, statusMessage: PRODUCT_NOT_FOUND, fatal: true })
@@ -33,11 +34,7 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => [
 <template>
   <div class="product-details">
     <Breadcrumbs :items="breadcrumbs" />
-    <ProductDetailsState
-      v-if="status === 'pending' || status === 'idle' || error"
-      :loading="status === 'pending' || status === 'idle'"
-      @retry="refresh()"
-    />
+    <ProductDetailsState v-if="loading || error" :loading="loading" @retry="refresh()" />
     <template v-else-if="product">
       <ProductImageCard :product="product" />
       <ProductSpecificationsCard :product="product" />

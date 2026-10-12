@@ -12,16 +12,7 @@ withDefaults(defineProps<{ items: readonly BreadcrumbItem[]; label?: string }>()
   <nav :aria-label="label" class="breadcrumbs">
     <ol>
       <li v-for="(item, index) in items" :key="index" :class="{ 'current-item': !item.to }">
-        <svg
-          v-if="index"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <use href="/images/product-list/caret.svg#icon" />
-        </svg>
+        <AppIcon v-if="index" name="caret" />
         <NuxtLink v-if="item.to" :to="item.to" :aria-label="item.icon ? item.label : undefined">
           <AppIcon v-if="item.icon" :name="item.icon" />
           <span v-else dir="auto">{{ item.label }}</span>

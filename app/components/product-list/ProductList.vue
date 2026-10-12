@@ -39,7 +39,7 @@ const filteredProducts = computed(() =>
 
 <template>
   <section class="product-list" aria-labelledby="product-list-title">
-    <h1 id="product-list-title">لیست محصولات</h1>
+    <h1 id="product-list-title" class="visually-hidden">لیست محصولات</h1>
     <ProductControlsPlaceholder
       v-model:search="draft"
       v-model:available="available"
@@ -71,15 +71,6 @@ const filteredProducts = computed(() =>
 </template>
 
 <style scoped lang="scss">
-h1 {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
 .product-list {
   display: flex;
   flex-direction: column;

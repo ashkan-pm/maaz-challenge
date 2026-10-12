@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import Card from '~/components/ui/Card.vue'
 import ProductDetailRow from './ProductDetailRow.vue'
+import { formatFarsiNumber } from '~/utils/formatNumber'
 import type { Product } from '~/types/product'
 
 defineProps<{ product: Product }>()
 const headingId = useId()
-const numberFormatter = new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 2 })
+const formatNumber = (value: number) => formatFarsiNumber(value, { maximumFractionDigits: 2 })
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const numberFormatter = new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 
     <h2 :id="headingId">مشخصات فنی</h2>
     <dl>
       <ProductDetailRow label="قیمت">
-        <span>{{ numberFormatter.format(product.price) }} دلار</span>
+        <span>{{ formatNumber(product.price) }} دلار</span>
       </ProductDetailRow>
       <ProductDetailRow label="توضیحات" description>
         <p dir="auto">{{ product.description }}</p>
@@ -22,10 +23,10 @@ const numberFormatter = new Intl.NumberFormat('fa-IR', { maximumFractionDigits: 
         <span class="category" dir="auto">{{ product.category }}</span>
       </ProductDetailRow>
       <ProductDetailRow label="رتبه">
-        <span>{{ numberFormatter.format(product.rating.rate) }}</span>
+        <span>{{ formatNumber(product.rating.rate) }}</span>
       </ProductDetailRow>
       <ProductDetailRow label="تعداد">
-        <span>{{ numberFormatter.format(product.stockQuantity) }}</span>
+        <span>{{ formatNumber(product.stockQuantity) }}</span>
       </ProductDetailRow>
     </dl>
   </Card>

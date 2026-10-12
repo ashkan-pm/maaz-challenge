@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Modal from '~/components/ui/Modal.vue'
 import AppIcon from '~/components/ui/AppIcon.vue'
+import OverlayButton from '~/components/ui/OverlayButton.vue'
 import type { ProductSummary } from '~/types/product'
 
 defineProps<{ product: ProductSummary }>()
@@ -12,9 +13,9 @@ const open = defineModel<boolean>({ default: false })
     <template #default="{ close }">
       <div class="image-preview">
         <img :src="product.image" :alt="product.title" />
-        <button type="button" class="close-button" aria-label="بستن پیش‌نمایش" @click="close">
+        <OverlayButton class="close-button" aria-label="بستن پیش‌نمایش" @click="close">
           <AppIcon name="close" />
-        </button>
+        </OverlayButton>
       </div>
     </template>
   </Modal>
@@ -40,27 +41,6 @@ const open = defineModel<boolean>({ default: false })
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: var(--space-10);
-  block-size: var(--space-10);
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: rgb(0 0 0 / 50%);
   color: var(--color-surface);
-  transition: background-color var(--transition-duration) ease;
-
-  &:focus-visible,
-  &:active {
-    background: var(--color-primary);
-  }
-
-  @media (hover: hover) {
-    &:hover {
-      background: var(--color-primary);
-    }
-  }
 }
 </style>
