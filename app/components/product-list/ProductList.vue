@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import AppliedFilters from './AppliedFilters.vue'
-import ProductControlsPlaceholder from './ProductControlsPlaceholder.vue'
+import ProductControls from './ProductControls.vue'
 import ProductResultsState from './ProductResultsState.vue'
 import ProductGrid from './ProductGrid.vue'
 import { getProductCategories } from '~/utils/productCategories'
+import { matchesSearch } from '~/utils/productSearch'
 import { sortProducts } from '~/utils/productSort'
 import type { Product } from '~/types/product'
 
@@ -23,7 +24,7 @@ const { search, draft, available, sort, categories, submitSearch, clearSearch } 
 const matchingProducts = computed(() =>
   props.products.filter(
     (product) =>
-      product.title.toLowerCase().includes(search.value) && (!available.value || product.available)
+      matchesSearch(product.title, search.value) && (!available.value || product.available)
   )
 )
 const categoryOptions = computed(() => getProductCategories(props.products, matchingProducts.value))
@@ -40,7 +41,7 @@ const filteredProducts = computed(() =>
 <template>
   <section class="product-list" aria-labelledby="product-list-title">
     <h1 id="product-list-title" class="visually-hidden">لیست محصولات</h1>
-    <ProductControlsPlaceholder
+    <ProductControls
       v-model:search="draft"
       v-model:available="available"
       v-model:sort="sort"
